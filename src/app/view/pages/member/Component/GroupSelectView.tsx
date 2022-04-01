@@ -7,14 +7,6 @@ import TribeContent from "./TribContent";
 function GroupSelectView() {
   const [listData, setListData] = useState([]);
 
-  useEffect(()=> {
-    fetch('http://localhost:3000/public/data/Tribe.json', {
-      method: 'GET'
-    })
-      .then((res) => res.json())
-      .then(data => setListData(data))
-  }, []);
-
   return(
     <GroupSelectViewContainer>
       <SearchBar>

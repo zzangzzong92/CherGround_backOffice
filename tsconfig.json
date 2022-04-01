@@ -1,70 +1,70 @@
 {
-  "compilerOptions": {
-      // Target latest version of ECMAScript.
-      "target": "es5",
+"compilerOptions": {
+    // Target latest version of ECMAScript.
+    "target": "es5",
 
-      // path to output directory
-      "outDir": "./dist/",
+    // path to output directory
+    "outDir": "./dist/",
 
-      // enable strict null checks as a best practice
-      "strictNullChecks": true,
+    // enable strict null checks as a best practice
+    "strictNullChecks": true,
 
-      // Search under node_modules for non-relative imports.
-      "moduleResolution": "node",
+    // Search under node_modules for non-relative imports.
+    "moduleResolution": "node",
 
-      // Process & infer types from .js files.
-      "allowJs": true,
+    // Process & infer types from .js files.
+    "allowJs": true,
 
-      // Don't emit; allow Babel to transform files.
-      "noEmit": true,
+    // Don't emit; allow Babel to transform files.
+    "noEmit": true,
 
-      // Enable strictest settings like strictNullChecks & noImplicitAny.
-      "strict": true,
+    // Enable strictest settings like strictNullChecks & noImplicitAny.
+    "strict": true,
 
-      // Import non-ES modules as default imports.
-      "esModuleInterop": true,
+    // Import non-ES modules as default imports.
+    "esModuleInterop": true,
 
-      // use typescript to transpile jsx to js
-      "jsx": "react",
+    // use typescript to transpile jsx to js
+    "jsx": "react",
 
-      "baseUrl": "./src",
+    "baseUrl": "./src",
 
-      "lib": ["es2015", "dom.iterable", "es2016.array.include", "es2017.object", "dom", "es6"],
+    "lib": ["es2015", "dom.iterable", "es2016.array.include", "es2017.object", "dom", "es6"],
 
-      "module": "commonjs",
+    "module": "commonjs",
 
-      "removeComments": true,
+    "removeComments": true,
 
-      "alwaysStrict": true,
+    "alwaysStrict": true,
 
-      "allowUnreachableCode": false,
+    "allowUnreachableCode": false,
 
-      "noImplicitAny": true,
+    "noImplicitAny": true,
 
-      "noImplicitThis": true,
+    "noImplicitThis": true,
 
-      "noUnusedLocals": true,
+    "noUnusedLocals": true,
 
-      "noUnusedParameters": true,
+    "noUnusedParameters": true,
 
-      "noImplicitReturns": true,
+    "noImplicitReturns": true,
 
-      "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true,
 
-      "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true,
 
-      "importHelpers": true,
+    "importHelpers": true,
 
-      "plugins": [
-          {
-              "name": "typescript-styled-plugin"
-          }
-      ],
+    "plugins": [
+        {
+            "name": "typescript-styled-plugin"
+        }
+    ],
 
-      "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
+    "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
 
-      "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
+    "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
 
-      "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */
-  }
+    "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */
+    }
 }

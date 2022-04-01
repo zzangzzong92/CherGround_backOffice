@@ -2,25 +2,13 @@ import React, {useState, useEffect, useCallback} from "react";
 import styled from "styled-components";
 import TableContent from "./TableContent";
 import Modal from "app/view/component/Modal";
+import MemberAddModal from "./MemberAddModal";
 
 function MemberListView() {
   const [memberList, setMemberList] = useState([]);
-  const [isOpenDropDown, setIsOpenDropDown] = useState<boolean>(false);
+  // const [isOpenDropDown, setIsOpenDropDown] = useState<boolean>(false);
   const [isOpenAddMemberModal, setIsOpenAddMemberModal] = useState<boolean>(false);
   const [addMember, setAddMember] = useState<boolean>(false);
-
-  useEffect(()=> {
-    console.log(1)
-    fetch('http://localhost:3000/public/data/MemberList.json', {
-      method: 'GET'
-    })
-      .then((res) => {
-        return res.json()
-      })
-      .then(data => {
-        console.log(data);
-        setMemberList(data)})
-  }, []);
 
   const openAddMember = useCallback(() => {
     setAddMember(!openAddMember);
@@ -46,7 +34,7 @@ function MemberListView() {
         <AddMemberButton onClick={() => {setIsOpenAddMemberModal(!isOpenAddMemberModal)}}>
           <AddMemberSpan>구성원 추가</AddMemberSpan>
           {isOpenAddMemberModal && (
-            <Modal 
+            <MemberAddModal
               onClickToggleModal={openAddMember}
               width="398px"
               height="258px"
@@ -68,7 +56,7 @@ function MemberListView() {
                     </AddMemberAddButton>
                   </ButtonWrapper>
               </AddMemberContainer>
-            </Modal>
+            </MemberAddModal>
           )}
         </AddMemberButton>
       </HeaderRight>
@@ -85,7 +73,7 @@ function MemberListView() {
       </MemberListTable>
       {memberList && memberList.map((memberList: any) => {
         return(
-          <TableContent 
+          <TableContent
             key={memberList.id}
             name={memberList.name}
             position={memberList.position}
