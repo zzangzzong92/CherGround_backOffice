@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "name": "대표", 
+    "membernumber": "1"
+  },
+  {
+    "id": 2,
+    "name": "임원", 
+    "membernumber": 1
+  },
+  {
+    "id": 3,
+    "name": "전략 파트", 
+    "membernumber": 2
+  },
+  {
+    "id": 4,
+    "name": "영업 파트", 
+    "membernumber": 4
+  },
+  {
+    "id": 5,
+    "name": "정산 파트", 
+    "membernumber": 3
+  },
+  {
+    "id": 6,
+    "name": "현장 파트", 
+    "membernumber": 3
+  },
+  {
+    "id": 7,
+    "name": "마케팅 파트", 
+    "membernumber": 2
+  },
+  {
+    "id": 8,
+    "name": "커머스 파트", 
+    "membernumber": 2
+  },
+  {
+    "id": 9,
+    "name": "기획 파트", 
+    "membernumber": 4
+  },
+  {
+    "id": 10,
+    "name": "개발 파트", 
+    "membernumber": 9
+  },
+  {
+    "id": 11,
+    "name": "디자인 파트", 
+    "membernumber": 2
+  },
+  {
+    "id": 12,
+    "name": "재무 파트", 
+    "membernumber": 1
+  },
+  {
+    "id": 13,
+    "name": "인사 파트", 
+    "membernumber": 1
+  }
+]
+
