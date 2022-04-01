@@ -1,0 +1,210 @@
+[
+  {
+    "id": 1,
+    "profileImgUrl": null,
+    "name": "이연",
+    "position": "대표",
+    "job": "대표",
+    "group": ["대표"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 2,
+    "name": "송무현",
+    "position": "이사",
+    "job": "이사",
+    "group": ["임원"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 3,
+    "name": "황창민",
+    "position": "트라이브 리더/파트 리더",
+    "job": "트라이브 리더",
+    "group": ["전략파트", "기획 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 4,
+    "name": "김규태",
+    "position": "트라이브 리더/파트 리더",
+    "job": "트라이브 리더",
+    "group": ["영업 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 5,
+    "name": "장성용",
+    "position": "트라이브 리더/파트 리더",
+    "job": "트라이브 리더",
+    "group": ["개발 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 6,
+    "name": "김창현",
+    "position": "트라이브 리더/파트 리더",
+    "job": "트라이브 리더",
+    "group": ["재무 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 7,
+    "name": "송무열",
+    "position": "파트 리더",
+    "job": "파트장",
+    "group": ["현장 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 8,
+    "name": "정성욱",
+    "position": "매니저",
+    "job": "개발",
+    "group": ["개발 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 9,
+    "name": "김건우",
+    "position": "매니저",
+    "job": "개발",
+    "group": ["개발 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 10,
+    "name": "황재원",
+    "position": "매니저",
+    "job": "개발",
+    "group": ["개발 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 11,
+    "name": "서동이",
+    "position": "매니저",
+    "job": "개발",
+    "group": ["개발 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 12,
+    "name": "박단비",
+    "position": "매니저",
+    "job": "개발",
+    "group": ["개발 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 13,
+    "name": "김도희",
+    "position": "매니저",
+    "job": "개발",
+    "group": ["개발 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 14,
+    "name": "정태영",
+    "position": "매니저",
+    "job": "개발",
+    "group": ["개발 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 15,
+    "name": "장종현",
+    "position": "매니저",
+    "job": "개발",
+    "group": ["개발 파트"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 16,
+    "name": "이연",
+    "position": "대표",
+    "job": "대표",
+    "group": ["대표"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 17,
+    "name": "이연",
+    "position": "대표",
+    "job": "대표",
+    "group": ["대표"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 18,
+    "name": "이연",
+    "position": "대표",
+    "job": "대표",
+    "group": ["대표"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 19,
+    "name": "이연",
+    "position": "대표",
+    "job": "대표",
+    "group": ["대표"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 20,
+    "name": "이연",
+    "position": "대표",
+    "job": "대표",
+    "group": ["대표"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 21,
+    "name": "이연",
+    "position": "대표",
+    "job": "대표",
+    "group": ["대표"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 22,
+    "name": "이연",
+    "position": "대표",
+    "job": "대표",
+    "group": ["대표"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  },
+  {
+    "id": 23,
+    "name": "이연",
+    "position": "대표",
+    "job": "대표",
+    "group": ["대표"],
+    "phone": "010-0000-0000",
+    "email": "email@cherground.com"
+  }
+]
