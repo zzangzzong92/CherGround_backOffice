@@ -6,6 +6,6 @@ import axios from "axios";
 @injectable()
 export default class GetMemberApiImpl implements GetMemberApi {
   getMember(): Promise<Entity.Member> {
-    return axios.get("localhost:8080/member/group/1?sort=name")
+    return axios.get("localhost:8080/member/group/1?sort=name");
   }
 }

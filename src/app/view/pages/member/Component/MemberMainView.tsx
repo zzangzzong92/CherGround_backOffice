@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GroupSelectView from "./GroupSelectView";
 import Header from "./Header";
 import MemberListView from "./MemberListView";
 
-
-function MemberMainView() {
-  return(
+function MemberMainView({ children }: any) {
+  return (
     <MainContainer>
-       <Header />
-       <Bottom>
+      {children}
+      <Header />
+      <Bottom>
         <GroupSelectView />
         <MemberListView />
-       </Bottom>
-     </MainContainer>
+      </Bottom>
+    </MainContainer>
   );
 }
+
+export default MemberMainView;
 
 const MainContainer = styled.div`
   display: flex;
@@ -25,4 +27,3 @@ const MainContainer = styled.div`
 const Bottom = styled.div`
   display: flex;
 `;
-export default MemberMainView;

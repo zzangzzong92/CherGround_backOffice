@@ -5,16 +5,15 @@ import NotFound from "./member/Component/NotFound";
 import SideNav from "./member/Component/SideNav";
 
 export function MainView() {
-  return(
-    <MainContainer>
-      <SideNav />
-      <MemberListView />
-      <NotFound />
-    </MainContainer>
-  )
+	return(
+		<MainContainer>
+			<SideNav />
+		</MainContainer>
+	);
 }
 
 const MainContainer = styled.div`
+	display: flex;
   width: 100%;
 `;
 

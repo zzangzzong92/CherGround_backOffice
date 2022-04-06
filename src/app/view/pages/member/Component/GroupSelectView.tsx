@@ -1,16 +1,34 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SearchIcon from "../../../assets/images/SearchIcon.svg";
 import Plus from "../../../assets/images/Plus.svg";
 import TribeContent from "./TribContent";
 
 function GroupSelectView() {
-  const [listData, setListData] = useState([]);
+  const [listData, setListData] = useState<Array<string>>([]);
+  const [search, setSearch] = useState<string>("");
 
-  return(
+  const onChangeSearch = (e: any) => {
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:3000/public/data/Tribe.json", {
+      method: "GET",
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setListData(data);
+      });
+  }, []);
+
+  return (
     <GroupSelectViewContainer>
       <SearchBar>
-        <TextInput type="text" placeholder="파트, 이름 검색"/>
+        <TextInput type="text" placeholder="파트, 이름 검색" />
         <SearchIconBox>
           <SearchIcon />
         </SearchIconBox>
@@ -27,20 +45,21 @@ function GroupSelectView() {
         </GroupController>
         <TribeList>
           <TribeContentWrapper>
-            {listData && listData.map((tribelist: any) => {
-              return(
-                <TribeContent
-                  key={tribelist.id}
-                  name={tribelist.name}
-                  membernumber={tribelist.membernumber}
-                />
-              );
-            })}
+            {listData &&
+              listData.map((tribelist: any) => {
+                return (
+                  <TribeContent
+                    key={tribelist.id}
+                    name={tribelist.name}
+                    membernumber={tribelist.membernumber}
+                  />
+                );
+              })}
           </TribeContentWrapper>
         </TribeList>
       </GroupViewer>
     </GroupSelectViewContainer>
-  )
+  );
 }
 
 const GroupSelectViewContainer = styled.div`
@@ -82,7 +101,7 @@ const GroupViewer = styled.div`
   flex-direction: column;
   margin-top: 18px;
   border-radius: 4px;
-  background-color: #F7F9FB;
+  background-color: #f7f9fb;
 `;
 
 const GroupController = styled.div`
@@ -110,7 +129,7 @@ const AllMember = styled.div`
 const MemberNumber = styled.div`
   font-size: 16px;
   font-weight: 400;
-  color: #6B7382;
+  color: #6b7382;
   padding: 2px 7px;
 `;
 

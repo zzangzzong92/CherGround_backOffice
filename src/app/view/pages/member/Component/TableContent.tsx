@@ -1,12 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-
-
 function TableContent(MemberList: any) {
-
-  
-  return(
+  return (
     <TableListContainer>
       <MemberListInfo>
         <Member>
@@ -16,20 +12,16 @@ function TableContent(MemberList: any) {
         <Member>{MemberList.position}</Member>
         <Member>{MemberList.job}</Member>
         <Member>
-          {MemberList.group && MemberList.group.map((group: Array<string>) => {
-            console.log(group);
-            return(
-            <Group>
-              {group}
-            </Group>
-            )
-          })}
+          {MemberList.group &&
+            MemberList.group.map((group: Array<string>) => {
+              return <Group>{group}</Group>;
+            })}
         </Member>
         <Member>{MemberList.phone}</Member>
         <Member>{MemberList.email}</Member>
       </MemberListInfo>
     </TableListContainer>
-  )
+  );
 }
 
 const TableListContainer = styled.div`
@@ -46,8 +38,8 @@ const MemberImg = styled.div`
   font-weight: 500;
   line-height: 40px;
   letter-spacing: 0.15px;
-  color: #F3F5F9;
-  background-color: #8E99AB;
+  color: #f3f5f9;
+  background-color: #8e99ab;
 `;
 
 const MemberName = styled.div`
@@ -62,7 +54,7 @@ const MemberListInfo = styled.div`
 
 const Member = styled.div`
   height: 36px;
-  background-color: #EBEFF5;
+  background-color: #ebeff5;
   text-decoration: none;
   list-style: none;
   font-size: 14px;
@@ -70,32 +62,30 @@ const Member = styled.div`
   line-height: 40px;
   letter-spacing: 0.1px;
   margin-top: 8px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
+  /* border: 1px solid black; */
   color: rgba(44, 50, 61, 0.87);
   text-align: center;
 
-  :first-child{
+  :first-child {
     display: flex;
     width: 160px;
   }
-  :nth-child(2){
+  :nth-child(2) {
     width: 200px;
   }
-  :nth-child(3){
+  :nth-child(3) {
     width: 120px;
   }
-  :nth-child(4){
+  :nth-child(4) {
     display: flex;
-    margin-left: 40px;
-    margin-top: 15px;
-    width: 100px;
-  }
-  :nth-child(5){
-    margin-left: 40px;
     width: 180px;
   }
-  :nth-child(6){
-    width: 240px;
+  :nth-child(5) {
+    width: 180px;
+  }
+  :nth-child(6) {
+    width: 250px;
   }
 `;
 
@@ -103,7 +93,7 @@ const Group = styled.div`
   /* display: flex; */
   width: fit-content;
   height: fit-content;
-  background-color: #EBEFF5;
+  background-color: #ebeff5;
   border-radius: 16px;
   font-size: 12px;
   font-weight: 400;
@@ -111,6 +101,6 @@ const Group = styled.div`
   letter-spacing: 0.4px;
   color: rgba(44, 50, 61, 0.87);
   margin: 0 auto;
-`
+`;
 
 export default TableContent;

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { ReactChild, ReactNode, useState } from "react";
 import styled from "styled-components";
 import Cherground from "../../../assets/images/Cherground.svg";
 import Calculate from "../../../assets/images/Calculate.svg";
@@ -19,111 +19,132 @@ import MeetingRoom from "../../../assets/images/MeetingRoom.svg";
 import Close from "../../../assets/images/Close.svg";
 import Open from "../../../assets/images/Open.svg";
 import { Link } from "react-router-dom";
+import MemberListView from "./MemberListView";
 
+// interface RenderPageProps
 
-function SideNav() {
+function SideNav(props: any) {
   const [isOpen, setIsOpen] = useState(false);
 
   const OpenSide = () => {
     setIsOpen(!isOpen);
-  }
+  };
 
   const CloseSide = () => {
     setIsOpen(isOpen);
-  }
+  };
 
-  return(
-    <SideNavContainer>
-      <NavLogoAndSlideButton>
-        <CompanyLogo>
-          <Cherground />
-        </CompanyLogo>
-        <SlideCheck onClick={(OpenSide)}>
-          <SlideButton>
-            {isOpen ? (
-              <Open />
-            ) : (
-              <Close onClick={(CloseSide)}/>
-            )}
-          </SlideButton>
-        </SlideCheck>
-      </NavLogoAndSlideButton>
-      <BusinessContentWrapper>
-        <BusinessContent>
-          <Calculate />정산
-        </BusinessContent>
-        <BusinessContent>
-          <Order/>주문
-        </BusinessContent>
-        <BusinessContent>
-          <Order2 />주문
-        </BusinessContent>
-        <BusinessContent>
-          <Deposit />예치금
-        </BusinessContent>
-        <BusinessContentHorizental></BusinessContentHorizental>
-      </BusinessContentWrapper>
-      <UserContentWrapper>
-        <UserContentSpan>사용자</UserContentSpan>
-        <UserContent>
-          <Retail />소매업체
-        </UserContent>
-        <UserContent>
-          <Wholesale />도매업체
-        </UserContent>
-        <UserContent>
-          <Peed />피드
-        </UserContent>
-        <UserContent>
-          <Buying />사입
-        </UserContent>
-        <UserContent>
-          <User />사용자
-        </UserContent>
-        <UserContentHorizental></UserContentHorizental>
-      </UserContentWrapper>
-      <EtcContentWrapper>
-        <EtcContentSpan>기타</EtcContentSpan>
-        <EtcContent>
-          <Inquiry />문의
-        </EtcContent>
-        <EtcContent>
-          <Questionnaire />설문지
-        </EtcContent>
-        <EtcContent>
-          <Arcade />상가
-        </EtcContent>
-        <EtcContent>
-          <NoticeAndBanner />공지&배너
-        </EtcContent>
-        <EtcContentHorizental></EtcContentHorizental>
-      </EtcContentWrapper>
-      <CherGroundWrapper>
-        <CherGroundContentSpan>쉐어그라운드</CherGroundContentSpan>
-        <CherGroundContent>
-          <Link to='memberlist'>
-            <Member />내부 구성원
-          </Link>
-        </CherGroundContent>
-        <CherGroundContent>
-          <Link to={'meetingroom'}>
-            <MeetingRoom />회의실
-          </Link>
-        </CherGroundContent>
-        <Version>v.current</Version>
-        <Logout>로그아웃</Logout>
-      </CherGroundWrapper>
-    </SideNavContainer>
+  return (
+    <TotalWrapper>
+      <SideNavContainer>
+        <NavLogoAndSlideButton>
+          <CompanyLogo>
+            <Cherground />
+          </CompanyLogo>
+          <SlideCheck onClick={OpenSide}>
+            <SlideButton>
+              {isOpen ? <Open /> : <Close onClick={CloseSide} />}
+            </SlideButton>
+          </SlideCheck>
+        </NavLogoAndSlideButton>
+        <BusinessContentWrapper>
+          <BusinessContent>
+            <Calculate />
+            정산
+          </BusinessContent>
+          <BusinessContent>
+            <Order />
+            주문
+          </BusinessContent>
+          <BusinessContent>
+            <Order2 />
+            주문
+          </BusinessContent>
+          <BusinessContent>
+            <Deposit />
+            예치금
+          </BusinessContent>
+          <BusinessContentHorizental></BusinessContentHorizental>
+        </BusinessContentWrapper>
+        <UserContentWrapper>
+          <UserContentSpan>사용자</UserContentSpan>
+          <UserContent>
+            <Retail />
+            소매업체
+          </UserContent>
+          <UserContent>
+            <Wholesale />
+            도매업체
+          </UserContent>
+          <UserContent>
+            <Peed />
+            피드
+          </UserContent>
+          <UserContent>
+            <Buying />
+            사입
+          </UserContent>
+          <UserContent>
+            <User />
+            사용자
+          </UserContent>
+          <UserContentHorizental></UserContentHorizental>
+        </UserContentWrapper>
+        <EtcContentWrapper>
+          <EtcContentSpan>기타</EtcContentSpan>
+          <EtcContent>
+            <Inquiry />
+            문의
+          </EtcContent>
+          <EtcContent>
+            <Questionnaire />
+            설문지
+          </EtcContent>
+          <EtcContent>
+            <Arcade />
+            상가
+          </EtcContent>
+          <EtcContent>
+            <NoticeAndBanner />
+            공지&배너
+          </EtcContent>
+          <EtcContentHorizental></EtcContentHorizental>
+        </EtcContentWrapper>
+        <CherGroundWrapper>
+          <CherGroundContentSpan>쉐어그라운드</CherGroundContentSpan>
+          <CherGroundContent>
+            <Link to="/memberlist">
+              <Member />
+              내부 구성원
+            </Link>
+          </CherGroundContent>
+          <CherGroundContent>
+            <Link to={"/meetingroom"}>
+              <MeetingRoom />
+              회의실
+            </Link>
+          </CherGroundContent>
+          <Version>v.current</Version>
+          <Logout>로그아웃</Logout>
+        </CherGroundWrapper>
+      </SideNavContainer>
+      <RenderPage>{props.children}</RenderPage>
+    </TotalWrapper>
   );
 }
+const TotalWrapper = styled.div`
+  display: flex;
+`;
+
+const RenderPage = styled.div``;
 
 const SideNavContainer = styled.div`
-width: 200px;
+  width: 200px;
   height: 1060px;
   background-color: #f3f5f9;
   position: relative;
   /* transform: translateX(-60px); */
-  transition: all .35s;
+  transition: all 0.35s;
   /* z-index: 1; */
 
   @keyframes showSlide {
@@ -152,9 +173,7 @@ const SlideCheck = styled.div`
   cursor: pointer;
 `;
 
-const SlideButton = styled.div`
-
-`;
+const SlideButton = styled.div``;
 
 const BusinessContentWrapper = styled.div`
   display: flex;
@@ -162,14 +181,14 @@ const BusinessContentWrapper = styled.div`
 `;
 
 const BusinessContent = styled.div`
-width: 168px;
-height: 36px;
+  width: 168px;
+  height: 36px;
   font-size: 16px;
   align-items: center;
   display: flex;
   cursor: pointer;
 
-  :nth-child(1){
+  :nth-child(1) {
     margin: 22px 16px 10px 16px;
   }
   :nth-child(2) {
@@ -204,7 +223,7 @@ const UserContent = styled.div`
   align-items: center;
   cursor: pointer;
 
-  :first-child{
+  :first-child {
     margin: 22px 16px 10px 16px;
   }
   :nth-child(2) {
@@ -246,7 +265,7 @@ const EtcContent = styled.div`
   align-items: center;
   cursor: pointer;
 
-  :nth-child(1){
+  :nth-child(1) {
     margin: 22px 16px 10px 16px;
   }
   :nth-child(2) {
@@ -285,7 +304,7 @@ const CherGroundContent = styled.div`
   align-items: center;
   cursor: pointer;
 
-  :nth-child(1){
+  :nth-child(1) {
     margin: 22px 16px 10px 16px;
   }
   :nth-child(2) {

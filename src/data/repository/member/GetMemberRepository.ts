@@ -5,13 +5,13 @@ import { GetMemberApi } from "data/api";
 
 @injectable()
 export default class GetMemberRepositoryImpl implements GetMemberRepository {
-  private getMemberApi: GetMemberApi;
+	private getMemberApi: GetMemberApi;
 
-  constructor(@inject("GetMemberApi") getMemberApi: GetMemberApi) {
-    this.getMemberApi = getMemberApi;
-  }
+	constructor(@inject("GetMemberApi") getMemberApi: GetMemberApi) {
+		this.getMemberApi = getMemberApi;
+	}
 
-  getMember(): Promise<Entity.Member> {
-    return this.getMemberApi.getMember();
-  }
+	getMember(): Promise<Entity.Member> {
+		return this.getMemberApi.getMember();
+	}
 }

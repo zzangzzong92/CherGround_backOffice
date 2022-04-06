@@ -6,6 +6,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
+    "bundle": "webpack",
     "dev": "webpack-dev-server --mode development --open --hot --stage dev",
     "prod": "webpack-dev-server --mode development --open --hot --stage prod",
     "test-build": "webpack --mode production --stage dev && aws s3 sync ./dist s3://new.admin.cherground.com --profile=cherground",

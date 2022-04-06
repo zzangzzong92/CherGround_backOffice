@@ -1,36 +1,37 @@
 import React from "react";
 import styled from "styled-components";
 
-function TribeContent(tribelist: any){
-  
-
-  return(
+function TribeContent(tribelist: any) {
+  return (
     <ListContainer>
-      <TribeName>
-        {tribelist.name}
-      </TribeName>
-      <TribeMemberNumber>
-        {tribelist.membernumber}
-      </TribeMemberNumber>
+      <TribeName>{tribelist.name}</TribeName>
+      <TribeMemberNumber>{tribelist.membernumber}</TribeMemberNumber>
     </ListContainer>
-  )
+  );
 }
 
 const ListContainer = styled.div`
   display: flex;
-  width: 260px;
+  width: 242px;
   height: 44px;
   margin-top: 8px;
   padding-left: 16px;
-`
+  cursor: pointer;
+
+  :hover {
+    background-color: rgba(63, 81, 181, 0.08);
+    font-weight: bold;
+  }
+`;
 
 const TribeName = styled.div`
   font-size: 16px;
   font-weight: 400;
   color: rgba(44, 50, 61, 0.87);
+  margin-top: 12px;
   letter-spacing: 0.15px;
   line-height: 150%;
-`
+`;
 
 const TribeMemberNumber = styled.div`
   width: 23px;
@@ -45,7 +46,8 @@ const TribeMemberNumber = styled.div`
   color: rgba(44, 50, 61, 0.87);
   justify-content: center;
   border-radius: 50%;
-  background-color: #EBEFF5;
-  margin: 0 8px;
-`
+  background-color: rgba(70, 77, 90, 0.12);
+  padding-top: 2px;
+  margin: 12px 8px;
+`;
 export default TribeContent;
