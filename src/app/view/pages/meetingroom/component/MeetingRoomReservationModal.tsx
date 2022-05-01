@@ -11,7 +11,7 @@ interface ModalSize {
   margin: string;
 }
 
-function Modal({
+function MeetingRoomReservationModal({
   // onClickToggleModal,
   children,
   width,
@@ -74,4 +74,4 @@ const Backdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.2);
 `;
 
-export default Modal;
+export default MeetingRoomReservationModal;

@@ -1,23 +1,26 @@
-export type PositionType = ["대표", "이사", "트라이브 리더/파트 리더", "파트 리더", "매니저", "아웃소싱"];
+export type Position = "대표" | "이사" | "트라이브 리더" | "파트 리더" | "매니저";
 
-export type JobType = ["대표", "이사", "트라이브 리더", "파트장", "개발", "디자인", "재무", "인사", "영업", "정산", ""]; 
+export type Job = "대표" | "임원";
 
-export type GroupType = ["대표", "임원", "전략 파트", "기획 파트", "영업 파트", "개발 파트", "재무 파트", "재무 파트", "현장 파트", "마케팅 파트", "커머스 파트", "기획 파트", "디자인 파트", "인사 파트"]
-
-export interface Member {
-  id: number; //http에서 pathParameter에 넣으면 숫자를 넣어도 string으로 가니깐 = string
-  profileImgUrl: string | null;
-  name: string;
-  position: PositionType[]; //직책
-  job: string; //직무
-  group: string[];
-  isLeader: boolean; //각 파트리더 유무, 별표설정
-  phoneNumber: number;
-  email: string;
-}
-
-export interface Group{
+export interface User {
   id: number;
   name: string;
-  member: Member;
+  imgUrl: string;
+  position: ("대표" | "임원")[];
+  job: "대표" | "임원";
+  phoneNumber: string;
+  email: string;
+}
+export interface Group {
+  //그룹안에서는 복수의 유저가 존재
+  id: number;
+  name: string;
+  users: User[];
+}
+  // 개인이 복수의 그룹에 속해있다면, 한 그룹에서는 리더일 수 있지만, 다른 한쪽에서는 팀원일 수 있으니
+export interface Member {
+  id: number;
+  group: Group;
+  user: User;
+  isLeader: boolean;
 }

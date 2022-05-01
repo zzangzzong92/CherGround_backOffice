@@ -1,9 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 
-interface ModalDefaultType {
-  // onClickToggleModal: () => void;
-}
+interface ModalDefaultType {}
 
 interface ModalSize {
   width: string;
@@ -11,8 +9,7 @@ interface ModalSize {
   margin: string;
 }
 
-function Modal({
-  // onClickToggleModal,
+function GroupAddModal({
   children,
   width,
   height,
@@ -23,15 +20,15 @@ function Modal({
       <DialogBox isWidth={width} isHeight={height} isMargin={margin}>
         {children}
       </DialogBox>
-      {/* <Backdrop
+      <Backdrop
         onClick={(e: React.MouseEvent) => {
           e.preventDefault();
 
-          if (onClickToggleModal) {
-          	onClickToggleModal();
-          }
+          // if (onClickToggleModal) {
+          // 	onClickToggleModal();
+          // }
         }}
-      /> */}
+      />
     </ModalContainer>
   );
 }
@@ -71,7 +68,7 @@ const Backdrop = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.2);
+  /* background-color: rgba(0, 0, 0, 0.2); */
 `;
 
-export default Modal;
+export default GroupAddModal;

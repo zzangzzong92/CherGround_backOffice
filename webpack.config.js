@@ -96,6 +96,16 @@ module.exports = (env, options) => {
             },
           ],
         },
+        {
+          test: /\.html$/,
+          exclude: [/node_modules/, require.resolve("./src/app/index.html")],
+          use: {
+            loader: "file-loader",
+            query: {
+              name: "[name].[ext]",
+            },
+          },
+        },
       ],
     },
     plugins: [

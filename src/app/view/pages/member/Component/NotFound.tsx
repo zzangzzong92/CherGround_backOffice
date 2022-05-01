@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const NotFound = ({ children }: any) => {
-  return <Container>{children}404페이지</Container>;
+  return <Container>{children}안돼 돌아가</Container>;
 };
 
 const Container = styled.div`

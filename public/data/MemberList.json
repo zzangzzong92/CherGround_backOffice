@@ -5,8 +5,10 @@
     "name": "이연",
     "position": "대표",
     "job": "대표",
-    "group": ["대표"],
-    "phone": "010-0000-0000",
+    "members": [
+      { "group": { "id": 1, "name": "대표" }, "id": 1, "isLeader": true }
+    ],
+    "phoneNumber": "010-0000-0000",
     "email": "email@cherground.com"
   },
   {

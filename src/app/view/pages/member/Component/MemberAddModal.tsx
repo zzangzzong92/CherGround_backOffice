@@ -20,15 +20,14 @@ function MemberAddModal({
       <DialogBox isWidth={width} isHeight={height} isMargin={margin}>
         {children}
       </DialogBox>
-      {/* <Backdrop
-				onClick={(e: React.MouseEvent) => {
-					// e.preventDefault();
-
-					// if (onClickToggleModal) {
-					// 	onClickToggleModal();
-					// }
-				}}
-			/> */}
+      <Backdrop
+        onClick={(e: React.MouseEvent) => {
+          e.preventDefault();
+          // if (onClickToggleModal) {
+          // 	onClickToggleModal();
+          // }
+        }}
+      />
     </ModalContainer>
   );
 }
@@ -68,7 +67,7 @@ const Backdrop = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.2);
+  /* background-color: rgba(0, 0, 0, 0.2); */
 `;
 
 export default MemberAddModal;

@@ -70,7 +70,7 @@ function SideNav(props: any) {
           <UserContentSpan>사용자</UserContentSpan>
           <UserContent>
             <Retail />
-            소매업체
+            소매업체x
           </UserContent>
           <UserContent>
             <Wholesale />
