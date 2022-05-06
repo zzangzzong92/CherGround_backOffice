@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import { GroupType } from "../../../../../../types";
 import GroupSelectView from "./GroupSelectView";
 import Header from "./Header";
 import MemberListView from "./MemberListView";

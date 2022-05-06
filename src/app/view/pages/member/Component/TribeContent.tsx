@@ -3,27 +3,20 @@ import { useHistory, useParams } from "react-router";
 import styled from "styled-components";
 
 function TribeContent({ tribe, group, setGroup }: any) {
-  const [sortCondition, setSortCondition] = useState<string>("name");
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   const history = useHistory();
 
-  const clickPart = () => {
-    // fetch(
-    //   `http://localhost:8080/group/${tribe.id}/member?sort=${sortCondition}&page=1&amount=15`,
-    //   {
-    //     method: "GET",
-    //     headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-    //   }
-    // )
-    //   .then((res) => res.json())
-    //   .then((groupData) => {
-    //     setGroup(groupData);
-    //     console.log(groupData);
-    //   });
+  const clickPart = (e: React.MouseEvent<Element>) => {
+    e.preventDefault();
+
     history.push(`/group/${tribe.id}`);
   };
 
   return (
-    <ListContainer onClick={clickPart}>
+    <ListContainer
+      onClick={clickPart}
+      style={{ background: isChecked ? "rgba(63, 81, 181, 0.08)" : "" }}
+    >
       <TribeName>{tribe.name}</TribeName>
       <TribeMemberNumber>{tribe.members.length}</TribeMemberNumber>
     </ListContainer>

@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TableUserList from "./TableUserList";
-import DropDown from "app/view/pages/member/Component/DropDown";
 import Modal from "app/view/component/Modal";
-import { useParams } from "react-router";
+import UserListDropDown from "./UserListDropDown";
 
-function UserListView({ users, setUsers, groupList, setGroupList }: any) {
-  const [selected, setSelected] = useState<string>("직책순 보기");
-  const [searchData, setSearchData] = useState<Array<string>>([]);
+function UserListView({ users, setUsers }: any) {
+  const [selected, setSelected] = useState<string>("이름순 보기");
+  // const [searchData, setSearchData] = useState<Array<string>>([]);
+  const [usersCount, setUsersCount] = useState<number>(0);
+  const [sort, setSort] = useState<string>("name");
 
   //모달 모음
-  const [isOpenAddMemberModal, setIsOpenAddMemberModal] =
-    useState<boolean>(false);
   const [openGroupAddDelete, setOpenGroupAddDelete] = useState<boolean>(false);
-  const [openSearchNamePartDrop, setOpenSearchNamePartDrop] =
-    useState<boolean>(false);
   const [openGroupInfoEdit, setOpenGroupInfoEdit] = useState<boolean>(false);
   const [openGroupDelete, setOpenGroupDelete] = useState<boolean>(false);
   const [addMemberInput, setAddMemberInput] = useState<string>("");
   const getAddButtonColorChange = addMemberInput.length >= 2;
-  const params: any = useParams();
+
+  //페이지네이션
+  const [paginationArray, setPaginationArray] = useState<number[]>([]); //페이지 숫자
+  const [page, setPage] = useState<number>(1);
+  const [userPerPage, setUserPerPage] = useState<number[]>([]);
 
   //멤버 filter
   useEffect(() => {
     //전체구성원 조회
-    fetch(`http://localhost:8080/user?sort=name&page=1&amount=15`, {
+    fetch(`http://localhost:8080/user?sort=${sort}&page=${page}&amount=15`, {
       method: "GET",
       headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
     })
@@ -32,59 +33,82 @@ function UserListView({ users, setUsers, groupList, setGroupList }: any) {
         return res.json();
       })
       .then((users) => {
-        users.forEach((user: any) => {
-          let count = 0;
-          user.members.forEach((member: any) => {
-            if (member.isLeader) {
-              count++;
+        fetch(`http://localhost:8080/user/count`, {
+          method: "GET",
+          headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
+        })
+          .then((secondRes) => secondRes.json())
+          .then((usersCountData) => {
+            users.forEach((user: any) => {
+              let count = 0;
+              user.members.forEach((member: any) => {
+                if (member.isLeader) {
+                  count++;
+                }
+              });
+              if (count) {
+                user.isLeader = true;
+              }
+            });
+
+            setUsersCount(usersCountData);
+
+            const paginationUserCountArray = [];
+            for (let i = 0; i < Math.ceil((usersCountData - 1) / 15); i++) {
+              paginationUserCountArray.push(i + 1); //유저수가 15명이면 딱 1로 떨어지나 +1을 하면 의미없는 2가 생성됨
             }
+
+            setPaginationArray(paginationUserCountArray);
+            setUserPerPage(usersCountData);
+            setUsers(users);
           });
-          if (count) {
-            user.isLeader = true;
-          }
-        });
-        setUsers(users);
       });
-  }, []);
+  }, [sort]);
 
-  // const DeleteGroup = () => {
-  //   fetch( , {
-  //     method: "",
-  //     headers: {"content-type": "application/json",
-  //     Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
-  //     mode: "cors",},
+  const loadPaginationContent = (pageNumber: number) => {
+    fetch(
+      `http://localhost:8080/user?sort=${sort}&page=${pageNumber}&amount=15`,
+      {
+        method: "get",
+        headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => {
+        setUsers(result);
+        setPage(pageNumber);
+      });
+  };
+
+  //1. 조회 api에서 page query parameter에 현재 페이지 숫자를 넣어서 fetch
+  //2. setUsers에 넣어줌
+
+  // const addMember = () => {
+  //   fetch(`http://localhost:8080/group/${params.id}/member`, {
+  //     method: "POST",
+  //     headers: {
+  //       "content-type": "application/json",
+  //       Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
+  //       mode: "cors",
+  //     },
   //     body: JSON.stringify({
-
+  //       memberId: addMemberInput,
   //     }),
   //   })
   //     .then((res) => res.json())
-  //     .then((result) =>)
-  // }
+  //     .then((result) => setUsers(result))
+  //     .then(() => setIsOpenAddMemberModal(false));
+  // };
 
-  const addMember = () => {
-    fetch(`http://localhost:8080/group/${params.id}/member`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
-        mode: "cors",
-      },
-      body: JSON.stringify({
-        memberId: addMemberInput,
-      }),
-    })
-      .then((res) => res.json())
-      .then((result) => setUsers(result))
-      .then(() => setIsOpenAddMemberModal(false));
-  };
-
-  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const [openSearchDrop, setOpenSearchDrop] = useState<boolean>(false);
-    const [search, setSearch] = useState<string>("");
-    e.preventDefault();
-    setAddMemberInput(e.target.value);
-    setSearch(e.target.value);
-  };
+  // const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const [openSearchDrop, setOpenSearchDrop] = useState<boolean>(false);
+  //   const [search, setSearch] = useState<string>("");
+  //   e.preventDefault();
+  //   setAddMemberInput(e.target.value);
+  //   setSearch(e.target.value);
+  // };
 
   return (
     <MemberListViewContainer>
@@ -92,21 +116,15 @@ function UserListView({ users, setUsers, groupList, setGroupList }: any) {
         <HeaderLeft>
           <SelectedPart>CherGround 구성원</SelectedPart>
           <MemberNumber>
-            <Member>{users ? users.length + "명" : "0명"}</Member>
+            <Member>{usersCount + "명"}</Member>
           </MemberNumber>
-          {/* {group && (
-            <GroupAddDelete
-              onClick={() => setOpenGroupAddDelete(!openGroupAddDelete)}
-            >
-              <DotDotDot />
-            </GroupAddDelete>
-          )} */}
           {openGroupAddDelete && (
             <GroupInfoEdit>
               <EditContent>
                 <ContentSpan
                   onClick={() => {
                     setOpenGroupInfoEdit(!openGroupInfoEdit);
+                    setOpenGroupAddDelete(false);
                   }}
                 >
                   정보 수정
@@ -130,8 +148,22 @@ function UserListView({ users, setUsers, groupList, setGroupList }: any) {
                         >
                           <Close>취소</Close>
                         </AddMemberColseButton>
-                        <AddMemberAddButton>
-                          <Add>수정</Add>
+                        <AddMemberAddButton
+                          style={{
+                            backgroundColor: getAddButtonColorChange
+                              ? "#333840"
+                              : "rgba(70, 77, 90, 0.12)",
+                          }}
+                        >
+                          <Add
+                            style={{
+                              color: getAddButtonColorChange
+                                ? "#FFFFFF"
+                                : "rgba(70, 77, 90, 0.26)",
+                            }}
+                          >
+                            수정
+                          </Add>
                         </AddMemberAddButton>
                       </ButtonWrapper>
                     </GroupInfoEditContainer>
@@ -173,12 +205,10 @@ function UserListView({ users, setUsers, groupList, setGroupList }: any) {
         </HeaderLeft>
         <HeaderRight>
           <Arrcordian>
-            <DropDown
+            <UserListDropDown
               selected={selected}
               setSelected={setSelected}
-              users={users}
-              setUsers={setUsers}
-              groupList={groupList}
+              setSort={setSort}
             />
           </Arrcordian>
         </HeaderRight>
@@ -191,7 +221,6 @@ function UserListView({ users, setUsers, groupList, setGroupList }: any) {
           <TitleContent>소속 그룹</TitleContent>
           <TitleContent>휴대폰 번호</TitleContent>
           <TitleContent>메일주소</TitleContent>
-          {users && <TitleContent></TitleContent>}
         </TableTitle>
       </MemberListTable>
       {users &&
@@ -200,6 +229,19 @@ function UserListView({ users, setUsers, groupList, setGroupList }: any) {
             <TableUserList key={user.id} user={user} setUsers={setUsers} />
           );
         })}
+      <PaginationButtonSection>
+        <PaginationButtonWrapper>
+          {paginationArray &&
+            paginationArray.map((pageNumber: number) => (
+              <PaginationButton
+                key={pageNumber}
+                onClick={() => loadPaginationContent(pageNumber)}
+              >
+                {pageNumber}
+              </PaginationButton>
+            ))}
+        </PaginationButtonWrapper>
+      </PaginationButtonSection>
     </MemberListViewContainer>
   );
 }
@@ -330,9 +372,6 @@ const TitleContent = styled.div`
   :nth-child(6) {
     width: 250px;
   }
-  :nth-child(7) {
-    width: 60px;
-  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -460,4 +499,30 @@ const GroupDeleteWarning = styled.div`
   line-height: 150%;
   letter-spacing: 0.15px;
   color: rgba(44, 50, 61, 0.87);
+`;
+
+const PaginationButtonSection = styled.div`
+  position: fixed;
+  width: 1140px;
+  height: 96px;
+`;
+
+const PaginationButtonWrapper = styled.div`
+  width: 420px;
+  height: 40px;
+  margin: 28px 0 0 360px;
+`;
+
+const PaginationButton = styled.button`
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  background: none;
+  cursor: pointer;
+
+  :hover {
+    background: rgba(70, 77, 90, 0.12);
+  }
 `;

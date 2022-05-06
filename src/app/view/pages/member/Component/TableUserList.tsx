@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import StarIcon from "../../../assets/images/StarIcon.svg";
 
-function TableUserList({ user, setGroup }: any) {
-  console.log(user);
-
+function TableUserList({ user }: any) {
   return (
     <TableListContainer>
       <MemberListInfo>
@@ -17,12 +15,16 @@ function TableUserList({ user, setGroup }: any) {
             </IconBox>
           )}
         </Member>
-        <Member>{user.position}</Member>
-        <Member>{user.job}</Member>
+        <Member>{user.position ? user.position : "직책없음"}</Member>
+        <Member>{user.job ? user.job : "직무없음"}</Member>
         <Member>
-          {user.group &&
-            user.group.map((group: any) => {
-              return <Group>{group.group.name}</Group>;
+          {user.members &&
+            user.members.map((group: any) => {
+              return (
+                <Group key={group.id}>
+                  {group.group.name ? group.group.name : "그룹없음"}
+                </Group>
+              );
             })}
         </Member>
         <Member>{user.phoneNumber}</Member>
@@ -118,198 +120,4 @@ const Group = styled.div`
   margin: 0 auto;
 `;
 
-//프로필 수정, 구성원 삭제 Div
-const ProfileDiv = styled.div`
-  width: 110px;
-  height: 72px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const EditProfile = styled.div`
-  width: 110px;
-  height: 36px;
-`;
-
-const EditProfileSpan = styled.div`
-  width: 110px;
-  height: 36px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  color: rgba(44, 50, 61, 0.87);
-`;
-
-const DeleteMember = styled.div`
-  width: 110px;
-  height: 36px;
-  background: rgba(74, 110, 177, 0.08);
-`;
-
-const DeleteMemberSpan = styled.div`
-  width: 110px;
-  height: 36px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  margin: 5px auto;
-  color: rgba(44, 50, 61, 0.87);
-`;
-
-//프로필 수정 모달
-const EditProfileContainer = styled.div``;
-
-const EditProfileTitle = styled.div`
-  width: 351px;
-  height: 32px;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 32px;
-  letter-spacing: 0.15px;
-  margin-left: 24px;
-  color: rgba(44, 50, 61, 0.87);
-`;
-
-const ProfileImg = styled.div`
-  width: 60px;
-  height: 60px;
-  margin-left: 24px;
-  border-radius: 64px;
-  background-color: #8e99ab;
-`;
-
-const ProfileImgInputWrapper = styled.div`
-  width: 350px;
-  height: 55px;
-  display: flex;
-  background-color: #ebeff5;
-  border-radius: 4px;
-  margin: 16px 0 0 24px;
-`;
-
-const NoneProfileImgSpan = styled.div`
-  margin-left: 15px;
-  color: #f3f5f9;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 60px;
-  letter-spacing: 0.15px;
-`;
-
-const FileUrl = styled.div`
-  width: 150px;
-  height: 24px;
-  margin-top: 18px;
-`;
-
-const RemoveFileIconBox = styled.div`
-  width: 24px;
-  height: 24px;
-  margin: 18px 0 0 150px;
-`;
-
-const FileUploadIconBox = styled.div`
-  width: 24px;
-  height: 24px;
-  margin: 18px 0 0 10px;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  width: 398px;
-  height: 98px;
-`;
-
-const EditProfileColseButton = styled.div`
-  width: 120px;
-  height: 42px;
-  margin: 32px 12px 24px 122px;
-  background-color: #ffffff;
-  border: 1px solid #333840;
-  border-radius: 4px;
-  cursor: pointer;
-`;
-
-const Close = styled.div`
-  width: 29px;
-  height: 26px;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 26px;
-  color: #333840;
-  text-align: center;
-  margin: 10px auto;
-`;
-
-const EditProfileAddButton = styled.div`
-  width: 120px;
-  height: 42px;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 26px;
-  margin: 32px 24px 24px 0px;
-  background-color: rgba(70, 77, 90, 0.12);
-  border-radius: 4px;
-  cursor: pointer;
-`;
-
-const Add = styled.div`
-  width: 29px;
-  height: 26px;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 26px;
-  text-align: center;
-  margin: 10px auto;
-`;
-
-//구성원 삭제 모달
-const DeleteMemberContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const DeleteMemberTitle = styled.div`
-  width: 351px;
-  height: 32px;
-  margin: 0 24px 0 24px;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 32px;
-  letter-spacing: 0.15px;
-  color: rgba(44, 50, 61, 0.87);
-`;
-
-const DeleteMemberWarning = styled.div`
-  width: 351px;
-  height: 24px;
-  margin: 24px 0 10px 24px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  letter-spacing: 0.15px;
-  color: rgba(44, 50, 61, 0.87);
-`;
-
-const DeleteMemberColseButton = styled.div`
-  width: 120px;
-  height: 42px;
-  margin: 32px 12px 24px 122px;
-  background-color: #ffffff;
-  border: 1px solid #333840;
-  border-radius: 4px;
-  cursor: pointer;
-`;
-
-const DeleteMemberButton = styled.div`
-  width: 120px;
-  height: 42px;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 26px;
-  margin: 32px 24px 24px 0px;
-  background-color: rgba(70, 77, 90, 0.12);
-  border-radius: 4px;
-  cursor: pointer;
-`;
 export default TableUserList;

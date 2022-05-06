@@ -99,6 +99,7 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
                         key={searchNameGroup.id}
                         searchNameGroup={searchNameGroup}
                         setGroup={setGroup}
+                        setGroupList={setGroupList}
                       />
                     );
                 })}

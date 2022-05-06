@@ -19,6 +19,7 @@ export default function UserMainView() {
       })
       .then((data) => {
         setGroupList(data);
+
         // setGroup(data);
       });
   }, []);

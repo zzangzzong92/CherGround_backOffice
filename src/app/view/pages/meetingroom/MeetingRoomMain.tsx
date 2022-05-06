@@ -62,19 +62,19 @@ export default function MeetingRoomMain() {
     }
   }, [searchMember]);
 
-  const AddMeetingRoom = () => {
-    fetch(``, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
-        mode: "cors",
-      },
-      body: JSON.stringify({}),
-    })
-      .then((res) => res.json())
-      .then((result) => setAddMeetingRoom(result));
-  };
+  // const AddMeetingRoom = () => {
+  //   fetch(``, {
+  //     method: "POST",
+  //     headers: {
+  //       "content-type": "application/json",
+  //       Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
+  //       mode: "cors",
+  //     },
+  //     body: JSON.stringify({}),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((result) => setAddMeetingRoom(result));
+  // };
 
   return (
     <MeetingRoomMainContainer>
@@ -176,6 +176,7 @@ export default function MeetingRoomMain() {
 
 const MeetingRoomMainContainer = styled.div`
   user-select: none;
+  margin-left: 20px;
 `;
 
 //왼쪽 전체

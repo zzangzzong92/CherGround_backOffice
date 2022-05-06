@@ -3,39 +3,24 @@ import styled from "styled-components";
 import ArrowUp from "../../../assets/images/ArrowUp.svg";
 import ArrowDown from "../../../assets/images/ArrowDown.svg";
 
-const DropDown = ({ selected, setSelected, setMemberList, groupId }: any) => {
+const UserListDropDown = ({ selected, setSelected, setSort }: any) => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const options = ["직책순 보기", "직무순 보기", "이름순 보기"];
-  let sort: string;
 
   const clickSort = (index: number) => {
     switch (index) {
       case 0:
-        sort = "position";
+        setSort("position");
         break;
       case 1:
-        sort = "job";
+        setSort("job");
         break;
       case 2:
-        sort = "name";
+        setSort("name");
         break;
       default:
     }
-    console.log("sort", sort);
-
-    fetch(
-      `http://localhost:8080/group/${groupId}/member?sort=${sort}&page=1&amount=15`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-      }
-    )
-      .then((res) => res.json())
-      .then((users) => {
-        setMemberList(users);
-      });
   };
-  console.log(groupId);
 
   return (
     <DropDownContainer
@@ -139,4 +124,4 @@ const Content = styled.div`
   }
 `;
 
-export default DropDown;
+export default UserListDropDown;

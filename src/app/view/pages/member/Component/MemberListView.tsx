@@ -6,27 +6,33 @@ import DropDown from "app/view/pages/member/Component/DropDown";
 import DotDotDot from "../../../assets/images/DotDotDot.svg";
 import SearchNameDrop from "app/view/component/SearchNameDrop";
 import Modal from "app/view/component/Modal";
-import { log } from "console";
 
-function MemberListView({ groupList, groupId, group, setGroup }: any) {
+function MemberListView({
+  groupList,
+  setGroupList,
+  groupId,
+  group,
+  setGroup,
+}: any) {
   const [selected, setSelected] = useState<string>("직책순 보기");
-  const [searchData, setSearchData] = useState<Array<string>>([]);
+  const [searchData] = useState<Array<string>>([]);
+  const [search, setSearch] = useState<string>("");
 
   //모달 모음
   const [isOpenAddMemberModal, setIsOpenAddMemberModal] =
     useState<boolean>(false);
   const [openGroupAddDelete, setOpenGroupAddDelete] = useState<boolean>(false);
-  const [openSearchNamePartDrop, setOpenSearchNamePartDrop] =
-    useState<boolean>(false);
+  const [openSearchNamePartDrop] = useState<boolean>(false);
   const [openGroupInfoEdit, setOpenGroupInfoEdit] = useState<boolean>(false);
   const [openGroupDelete, setOpenGroupDelete] = useState<boolean>(false);
   const [addMemberInput, setAddMemberInput] = useState<string>("");
   const getAddButtonColorChange = addMemberInput.length >= 2;
+  const [editGroupInput, setEditGroupInput] = useState<string>("");
+  const getEditGroupInput = editGroupInput.length >= 2;
 
+  // http://localhost:8080/group/${groupId}/member/count = 멤버 인원 수 (그룹)
   //멤버 filter
   useEffect(() => {
-    //전체구성원 조회
-
     fetch(
       `http://localhost:8080/group/${groupId}/member?sort=name&page=1&amount=15`,
       {
@@ -48,17 +54,29 @@ function MemberListView({ groupList, groupId, group, setGroup }: any) {
     fetch(`http://localhost:8080/group/${groupId}`, {
       method: "delete",
       headers: {
-        "content-type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
         mode: "cors",
       },
-    })
-      .then((res) => res.json())
-      .then((result) => setGroup(result));
+    }).then(() => {
+      fetch(`http://localhost:8080/group`, {
+        //삭제 후 조회를 위한 fetch
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
+          mode: "cors",
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((result) => {
+          setGroupList(result);
+        });
+    });
   };
 
-  const EditGroup = () => {
-    fetch(`http://localhost:8080/group`, {
+  const editGroupName = () => {
+    fetch(`http://localhost:8080/group/${groupId}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -66,15 +84,29 @@ function MemberListView({ groupList, groupId, group, setGroup }: any) {
         mode: "cors",
       },
       body: JSON.stringify({
-        name: group.name,
+        name: editGroupInput,
       }),
-    })
-      .then((res) => res.json())
-      .then((result) => setGroup(result));
+    }).then(() =>
+      fetch(`http://localhost:8080/group`, {
+        //삭제 후 조회를 위한 fetch
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
+          mode: "cors",
+        },
+      }).then((result) => setGroupList(result))
+    );
+    setOpenGroupInfoEdit(false);
+  };
+
+  const groupNameEditInputHandler = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEditGroupInput(e.target.value);
   };
 
   const addMember = () => {
-    fetch(`http://localhost:8080/group/${groupId}/member`, {
+    fetch(`http://localhost:8080/group/${group.members.id}/member`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -82,7 +114,7 @@ function MemberListView({ groupList, groupId, group, setGroup }: any) {
         mode: "cors",
       },
       body: JSON.stringify({
-        memberId: addMemberInput,
+        memberId: group.members.id,
       }),
     })
       .then((res) => res.json())
@@ -92,21 +124,26 @@ function MemberListView({ groupList, groupId, group, setGroup }: any) {
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const [openSearchDrop, setOpenSearchDrop] = useState<boolean>(false);
-    const [search, setSearch] = useState<string>("");
+
     e.preventDefault();
     setAddMemberInput(e.target.value);
     setSearch(e.target.value);
   };
 
-  console.log(group);
-
   return (
     <MemberListViewContainer>
       <Header>
         <HeaderLeft>
-          <SelectedPart>{group && group.name + "     구성원"}</SelectedPart>
+          <SelectedPart>{group.name + "     구성원"}</SelectedPart>
           <MemberNumber>
-            <Member>{group.members && group.members.length + "명"}</Member>
+            <Member>
+              {group.members &&
+                (group.members.length
+                  ? group.members.length + "명"
+                  : group.members.length === 0
+                  ? "0명"
+                  : "")}
+            </Member>
           </MemberNumber>
           {group && (
             <GroupAddDelete
@@ -134,7 +171,8 @@ function MemberListView({ groupList, groupId, group, setGroup }: any) {
                         <GroupInfoEditInput
                           type="text"
                           placeholder="수정할 그룹 이름을 입력하세요."
-                          // value={value}
+                          defaultValue={editGroupInput}
+                          onChange={groupNameEditInputHandler}
                         ></GroupInfoEditInput>
                       </GroupInfoEditInputBox>
                       <ButtonWrapper>
@@ -145,8 +183,24 @@ function MemberListView({ groupList, groupId, group, setGroup }: any) {
                         >
                           <Close>취소</Close>
                         </AddMemberColseButton>
-                        <AddMemberAddButton>
-                          <Add>수정</Add>
+                        <AddMemberAddButton
+                          onChange={editGroupName}
+                          style={{
+                            background: getEditGroupInput
+                              ? "#333840"
+                              : "rgba(70, 77, 90, 0.12)",
+                          }}
+                        >
+                          <Add
+                            onClick={editGroupName}
+                            style={{
+                              color: getEditGroupInput
+                                ? "#ffffff"
+                                : "rgba(70, 77, 90, 0.26)",
+                            }}
+                          >
+                            수정
+                          </Add>
                         </AddMemberAddButton>
                       </ButtonWrapper>
                     </GroupInfoEditContainer>
@@ -224,7 +278,7 @@ function MemberListView({ groupList, groupId, group, setGroup }: any) {
                         type="text"
                         placeholder="구성원의 이름을 입력해주세요."
                         onChange={onChangeSearch}
-                        // value={search}
+                        value={search}
                       ></CheckNameText>
                     </CheckName>
                     <SearchDropDown>
@@ -304,6 +358,11 @@ function MemberListView({ groupList, groupId, group, setGroup }: any) {
             />
           );
         })}
+      <PaginationButtonSection>
+        <PaginationButtonWrapper>
+          <PaginationButton>1</PaginationButton>
+        </PaginationButtonWrapper>
+      </PaginationButtonSection>
     </MemberListViewContainer>
   );
 }
@@ -313,6 +372,8 @@ export default MemberListView;
 const MemberListViewContainer = styled.div`
   margin-left: 24px;
   user-select: none;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.div`
@@ -352,7 +413,7 @@ const GroupAddDelete = styled.div`
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  margin-left: 8px;
+  margin: 3px 0 0 8px;
   text-align: center;
   position: relative;
 
@@ -590,12 +651,6 @@ const NameContainer = styled.div`
   z-index: 1;
 `;
 
-const SearchIconBox = styled.div`
-  width: 20px;
-  height: 20px;
-  margin: 8px 8px;
-`;
-
 //그룹 수정 모달
 const GroupInfoEditContainer = styled.div`
   display: flex;
@@ -695,4 +750,29 @@ const DeleteGroupSpan = styled.div`
   text-align: center;
   color: #ffffff;
   margin: 10px auto;
+`;
+
+const PaginationButtonSection = styled.div`
+  width: 1140px;
+  height: 96px;
+`;
+
+const PaginationButtonWrapper = styled.div`
+  width: 420px;
+  height: 40px;
+  margin: 28px 0 0 360px;
+`;
+
+const PaginationButton = styled.button`
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  background: none;
+  cursor: pointer;
+
+  :hover {
+    background: rgba(70, 77, 90, 0.12);
+  }
 `;

@@ -17,8 +17,62 @@ export default function MeetingRoomHeader() {
     useState<boolean>(false);
   const [selectMeetingRoom, setSelectMeetingRoom] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
-  const [dateCheckedBcco, setDateCheckedBcco] = useState<string>();
-  const [buttonState, setButtonState] = useState<boolean>(); //시간선택상태
+  const [checkAM, setCheckAM] = useState<Array<string>>([
+    "12:00",
+    "12:30",
+    "01:00",
+    "01:30",
+    "02:00",
+    "02:30",
+    "03:00",
+    "03:30",
+    "04:00",
+    "04:30",
+    "05:00",
+    "05:30",
+    "06:00",
+    "06:30",
+    "07:00",
+    "07:30",
+    "08:00",
+    "08:30",
+    "09:00",
+    "09:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+  ]);
+
+  const [checkPM, setCheckPM] = useState<Array<string>>([
+    "12:00",
+    "12:30",
+    "1:00",
+    "1:30",
+    "2:00",
+    "2:30",
+    "3:00",
+    "3:30",
+    "4:00",
+    "4:30",
+    "5:00",
+    "5:30",
+    "6:00",
+    "6:30",
+    "7:00",
+    "7:30",
+    "8:00",
+    "8:30",
+    "9:00",
+    "9:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+  ]);
+
+  const [dateCheckedBcco, setDateCheckedBcco] = useState<boolean>(false);
+  const [buttonState, setButtonState] = useState(); //시간선택상태
   const [timeChecked, setTimeChecked] = useState();
 
   //date-picker
@@ -37,7 +91,7 @@ export default function MeetingRoomHeader() {
   let dayOfWeek = koDay[new Date().getDay()];
   let dateString = month + "." + date + "(" + dayOfWeek + ")";
 
-  const AM = [
+  let AM = [
     "12:00",
     "12:30",
     "01:00",
@@ -64,7 +118,7 @@ export default function MeetingRoomHeader() {
     "11:30",
   ];
 
-  const PM = [
+  let PM = [
     "12:00",
     "12:30",
     "1:00",
@@ -118,7 +172,13 @@ export default function MeetingRoomHeader() {
 
   const clickClock = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    setButtonState(!buttonState);
+  };
+
+  const clickOfficeTime = () => {
+    const newAM = Array(AM.length).slice(19);
+    setCheckAM(newAM);
+    const newPM = Array(PM.length).slice(14, 23);
+    setCheckPM(newPM);
   };
 
   //업무시간만 보기 버튼
@@ -310,7 +370,12 @@ export default function MeetingRoomHeader() {
                       <DateSelectTop>
                         <DateSelectTitle>예약 시간</DateSelectTitle>
                         <OfficeHourButton>
-                          <SortButton type="checkbox"></SortButton>
+                          <SortButton
+                            type="checkbox"
+                            onClick={() => {
+                              clickOfficeTime;
+                            }}
+                          ></SortButton>
                           <SortButtonSpan>업무시간만 보기</SortButtonSpan>
                         </OfficeHourButton>
                       </DateSelectTop>
@@ -320,31 +385,16 @@ export default function MeetingRoomHeader() {
                             <AMSpan>오전</AMSpan>
                             <AMTimeWrapper>
                               {AM.map((amtime) => {
-                                buttonState === true ? (
-                                  <TimeDiv
-                                    onClick={(
-                                      e: React.MouseEvent<HTMLElement>
-                                    ) => {
-                                      clickClock(e);
-                                    }}
-                                  >
-                                    <TimeDivSpan key={amtime}>
-                                      {amtime}
-                                    </TimeDivSpan>
-                                  </TimeDiv>
-                                ) : (
-                                  <TimeDiv
-                                    onClick={(
-                                      e: React.MouseEvent<HTMLElement>
-                                    ) => {
-                                      clickClock(e);
-                                    }}
-                                  >
-                                    <TimeDivSpan key={amtime}>
-                                      {amtime}
-                                    </TimeDivSpan>
-                                  </TimeDiv>
-                                );
+                                <TimeDiv
+                                  key={amtime}
+                                  onClick={(
+                                    e: React.MouseEvent<HTMLElement>
+                                  ) => {
+                                    clickClock(e);
+                                  }}
+                                >
+                                  <TimeDivSpan>{amtime}</TimeDivSpan>
+                                </TimeDiv>;
                               })}
                             </AMTimeWrapper>
                           </AMDiv>
@@ -352,10 +402,8 @@ export default function MeetingRoomHeader() {
                             <PMSpan>오후</PMSpan>
                             <PMTimeWrapper>
                               {PM.map((pmtime) => (
-                                <TimeDiv>
-                                  <TimeDivSpan key={pmtime}>
-                                    {pmtime}
-                                  </TimeDivSpan>
+                                <TimeDiv key={pmtime}>
+                                  <TimeDivSpan>{pmtime}</TimeDivSpan>
                                 </TimeDiv>
                               ))}
                             </PMTimeWrapper>
@@ -1029,10 +1077,6 @@ const AllTimeButtonWrapper = styled.div`
   flex-direction: column;
 `;
 
-const AMDiv = styled.div`
-  margin-left: 10px;
-`;
-
 const AMSpan = styled.div`
   width: 26px;
   height: 22px;
@@ -1041,6 +1085,10 @@ const AMSpan = styled.div`
   line-height: 22px;
   letter-spacing: 0.1px;
   color: rgba(44, 50, 61, 0.87);
+`;
+
+const AMDiv = styled.div`
+  margin-left: 10px;
 `;
 
 const AMTimeWrapper = styled.div`
@@ -1074,7 +1122,7 @@ const TimeDiv = styled.button`
   width: 60px;
   height: 30px;
   margin-bottom: 3px;
-  background: #ffffff;
+  background-color: #ffffff;
   border: 1px solid #8e99ab;
   cursor: pointer;
 

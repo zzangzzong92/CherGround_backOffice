@@ -65,7 +65,7 @@ export default function SignUp() {
         email: emailInput,
         phoneNumber: phoneNumberInput,
       }),
-    });
+    }).then(() => history.push("/signin"));
   };
 
   const history = useHistory();

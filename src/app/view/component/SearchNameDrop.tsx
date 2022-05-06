@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 export default function SearchNameDrop({
   searchNameGroup,
-  setMemberList,
+  setGroup,
+  setGroupList,
 }: any) {
   const selectUser = () => {
     fetch(
@@ -15,7 +16,7 @@ export default function SearchNameDrop({
     )
       .then((res) => res.json())
       .then((users) => {
-        setMemberList(users);
+        setGroup(users);
       });
   };
 
@@ -29,7 +30,7 @@ export default function SearchNameDrop({
     )
       .then((res) => res.json())
       .then((users) => {
-        setMemberList(users);
+        setGroup(users);
       });
   };
 
@@ -68,7 +69,7 @@ const MemberName = styled.div`
 `;
 
 const NameSpan = styled.div`
-  width: 45px;
+  width: 120px;
   height: 24px;
   font-weight: 400;
   font-size: 16px;

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Cherground from "../../../assets/images/Cherground.svg";
 import Calculate from "../../../assets/images/Calculate.svg";
 import Order from "../../../assets/images/Order.svg";
 import Order2 from "../../../assets/images/Order2.svg";
@@ -18,45 +17,36 @@ import Member from "../../../assets/images/Member.svg";
 import MeetingRoom from "../../../assets/images/MeetingRoom.svg";
 import Close from "../../../assets/images/Close.svg";
 import Open from "../../../assets/images/Open.svg";
+import Logout from "../../../assets/images/Logout.svg";
 import { useHistory } from "react-router";
-import CloseSideNav from "./CloseSideNav";
+import SideNav from "./SideNav";
 
-// interface RenderPageProps
-
-function SideNav() {
-  const [isOpen, setIsOpen] = useState(false);
+function CloseSideNav() {
+  const [isOpen] = useState<boolean>(false);
   const history = useHistory();
-
   return (
     <TotalWrapper>
       {isOpen ? (
-        <CloseSideNav />
+        <SideNav />
       ) : (
         <SideNavContainer>
           <NavLogoAndSlideButton>
-            <CompanyLogo>
-              <Cherground />
-            </CompanyLogo>
-            <SlideCheck onClick={() => setIsOpen(!isOpen)}>
-              <SlideButton>{isOpen ? <Open /> : <Close />}</SlideButton>
+            <SlideCheck>
+              <SlideButton>{isOpen ? <Close /> : <Open />}</SlideButton>
             </SlideCheck>
           </NavLogoAndSlideButton>
           <BusinessContentWrapper>
             <BusinessContent>
               <Calculate />
-              정산
             </BusinessContent>
             <BusinessContent>
               <Order />
-              주문
             </BusinessContent>
             <BusinessContent>
               <Order2 />
-              주문
             </BusinessContent>
             <BusinessContent>
               <Deposit />
-              예치금
             </BusinessContent>
             <BusinessContentHorizental></BusinessContentHorizental>
           </BusinessContentWrapper>
@@ -64,23 +54,18 @@ function SideNav() {
             <UserContentSpan>사용자</UserContentSpan>
             <UserContent>
               <Retail />
-              소매업체
             </UserContent>
             <UserContent>
               <Wholesale />
-              도매업체
             </UserContent>
             <UserContent>
               <Peed />
-              피드
             </UserContent>
             <UserContent>
               <Buying />
-              사입
             </UserContent>
             <UserContent>
               <User />
-              사용자
             </UserContent>
             <UserContentHorizental></UserContentHorizental>
           </UserContentWrapper>
@@ -88,42 +73,32 @@ function SideNav() {
             <EtcContentSpan>기타</EtcContentSpan>
             <EtcContent>
               <Inquiry />
-              문의
             </EtcContent>
             <EtcContent>
               <Questionnaire />
-              설문지
             </EtcContent>
             <EtcContent>
               <Arcade />
-              상가
             </EtcContent>
             <EtcContent>
               <NoticeAndBanner />
-              공지&배너
             </EtcContent>
             <EtcContentHorizental></EtcContentHorizental>
           </EtcContentWrapper>
           <CherGroundWrapper>
-            <CherGroundContentSpan>쉐어그라운드</CherGroundContentSpan>
-            <CherGroundContent
-              onClick={() => {
-                history.push("/");
-              }}
-            >
+            <CherGroundContentSpan>기타</CherGroundContentSpan>
+            <CherGroundContentMember onClick={() => history.push("/")}>
               <Member />
-              내부 구성원
-            </CherGroundContent>
-            <CherGroundContent
-              onClick={() => {
-                history.push("/meetingroom");
-              }}
+            </CherGroundContentMember>
+            <CherGroundContentMeetingRoom
+              onClick={() => history.push("/meetingroom")}
             >
               <MeetingRoom />
-              회의실
-            </CherGroundContent>
-            <Version>v.current</Version>
-            <Logout onClick={() => history.push("/signin")}>로그아웃</Logout>
+            </CherGroundContentMeetingRoom>
+            <Version>v.1.21.4</Version>
+            <LogoutBox>
+              <Logout />
+            </LogoutBox>
           </CherGroundWrapper>
         </SideNavContainer>
       )}
@@ -132,13 +107,10 @@ function SideNav() {
 }
 const TotalWrapper = styled.div`
   display: flex;
-  user-select: none;
 `;
 
-// const RenderPage = styled.div``;
-
 const SideNavContainer = styled.div`
-  width: 200px;
+  width: 56px;
   height: 1060px;
   background-color: #f3f5f9;
   position: relative;
@@ -156,19 +128,16 @@ const SideNavContainer = styled.div`
   }
 `;
 
-const CompanyLogo = styled.div`
-  margin: 14px 0 13px 28px;
-`;
-
 const NavLogoAndSlideButton = styled.div`
   display: flex;
+  height: 66px;
   border-bottom: 1px solid rgba(51, 56, 62, 0.12);
 `;
 
 const SlideCheck = styled.div`
   width: 20px;
   height: 20px;
-  margin: 24px 12px 19px 70px;
+  margin: 24px 21px 0 19px;
   cursor: pointer;
 `;
 
@@ -188,21 +157,20 @@ const BusinessContent = styled.div`
   cursor: pointer;
 
   :nth-child(1) {
-    margin: 22px 16px 10px 16px;
+    margin: 22px 16px 10px 0px;
   }
   :nth-child(2) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
   :nth-child(3) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
   :nth-child(4) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
 `;
 const BusinessContentHorizental = styled.div`
-  width: 168px;
-  margin-left: 16px;
+  width: 56px;
   border-bottom: 1px solid rgba(51, 56, 62, 0.12);
 `;
 
@@ -214,7 +182,7 @@ const UserContentWrapper = styled.div`
 const UserContentSpan = styled.div`
   font-size: 12px;
   color: rgba(44, 50, 61, 0.6);
-  margin: 8px 0 0 32px;
+  margin: 8px 0 0 11px;
 `;
 
 const UserContent = styled.div`
@@ -223,28 +191,27 @@ const UserContent = styled.div`
   cursor: pointer;
 
   :first-child {
-    margin: 22px 16px 10px 16px;
+    margin: 22px 16px 10px 0px;
   }
   :nth-child(2) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
   :nth-child(3) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
   :nth-child(4) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
   :nth-child(5) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
   :nth-child(6) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
 `;
 
 const UserContentHorizental = styled.div`
-  width: 168px;
-  margin-left: 16px;
+  width: 56px;
   border-bottom: 1px solid rgba(51, 56, 62, 0.12);
 `;
 
@@ -256,7 +223,7 @@ const EtcContentWrapper = styled.div`
 const EtcContentSpan = styled.div`
   font-size: 12px;
   color: rgba(44, 50, 61, 0.6);
-  margin: 8px 0 0 32px;
+  margin: 8px 0 0 17px;
 `;
 
 const EtcContent = styled.div`
@@ -265,25 +232,24 @@ const EtcContent = styled.div`
   cursor: pointer;
 
   :nth-child(1) {
-    margin: 22px 16px 10px 16px;
+    margin: 22px 16px 10px 0px;
   }
   :nth-child(2) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
   :nth-child(3) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
   :nth-child(4) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
   :nth-child(5) {
-    margin: 0 16px 10px 16px;
+    margin: 0 16px 10px 0px;
   }
 `;
 
 const EtcContentHorizental = styled.div`
-  width: 168px;
-  margin-left: 16px;
+  width: 56px;
   border-bottom: 1px solid rgba(51, 56, 62, 0.12);
 `;
 
@@ -295,42 +261,29 @@ const CherGroundWrapper = styled.div`
 const CherGroundContentSpan = styled.div`
   font-size: 12px;
   color: rgba(44, 50, 61, 0.6);
-  margin: 8px 0 0 32px;
+  margin: 8px 0 0 17px;
 `;
 
-const CherGroundContent = styled.div`
-  display: flex;
-  align-items: center;
+const CherGroundContentMember = styled.div`
+  margin: 0 16px 10px 0px;
   cursor: pointer;
+`;
 
-  :nth-child(1) {
-    margin: 22px 16px 10px 16px;
-  }
-  :nth-child(2) {
-    margin: 0 16px 10px 16px;
-  }
-  :nth-child(3) {
-    margin: 0 16px 10px 16px;
-  }
-  :nth-child(4) {
-    margin: 0 16px 10px 16px;
-  }
-  :nth-child(5) {
-    margin: 0 16px 10px 16px;
-  }
+const CherGroundContentMeetingRoom = styled.div`
+  margin: 0 16px 10px 0px;
+  cursor: pointer;
 `;
 
 const Version = styled.div`
   font-size: 12px;
   color: rgba(44, 50, 61, 0.6);
-  margin: 70px 0 0 32px;
+  margin: 70px 0 0 8px;
 `;
 
-const Logout = styled.div`
+const LogoutBox = styled.div`
   font-size: 12px;
   color: rgba(44, 50, 61, 0.6);
-  margin: 10px 0 0 32px;
-  cursor: pointer;
+  margin: 10px 0 0 20px;
 `;
 
-export default SideNav;
+export default CloseSideNav;
