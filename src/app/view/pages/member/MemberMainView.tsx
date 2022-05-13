@@ -1,8 +1,10 @@
+import { AxiosResponse } from "axios";
+import MemberMainViewApi from "data/api/member/MemberMainViewApi";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import GroupSelectView from "./GroupSelectView";
-import Header from "./Header";
+import Header from "../Component/Header";
 import MemberListView from "./MemberListView";
 
 function MemberMainView() {
@@ -12,17 +14,10 @@ function MemberMainView() {
   const params: { id: string } = useParams();
   useEffect(() => {
     //그룹조회
-    fetch("http://localhost:8080/group", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setGroupList(data);
-        setGroup(data);
-      });
+    new MemberMainViewApi().getMemberInfo().then((result: any) => {
+      setGroupList(result);
+      setGroup(result);
+    });
   }, []);
 
   return (

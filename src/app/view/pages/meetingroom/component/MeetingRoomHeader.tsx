@@ -15,9 +15,11 @@ export default function MeetingRoomHeader() {
   const [openReservation, setOpenReservation] = useState<boolean>(false);
   const [openSelectMeetingRoomDrop, setOpenSelectMeetingRoomDrop] =
     useState<boolean>(false);
+  const [openSearchAttendeesDiv, setOpenSearchAttendeesDiv] =
+    useState<boolean>(false);
   const [selectMeetingRoom, setSelectMeetingRoom] = useState<string>("");
-  const [checked, setChecked] = useState<boolean>(false);
-  const [checkAM, setCheckAM] = useState<Array<string>>([
+  const [checkedTime, setCheckedTime] = useState<string>();
+  const [checkAM, setCheckAM] = useState<string[]>([
     "12:00",
     "12:30",
     "01:00",
@@ -44,7 +46,7 @@ export default function MeetingRoomHeader() {
     "11:30",
   ]);
 
-  const [checkPM, setCheckPM] = useState<Array<string>>([
+  const [checkPM, setCheckPM] = useState<string[]>([
     "12:00",
     "12:30",
     "1:00",
@@ -70,10 +72,9 @@ export default function MeetingRoomHeader() {
     "11:00",
     "11:30",
   ]);
-
+  const [clickMeetingTime, setClickMeetingTime] = useState<string[]>([]);
   const [dateCheckedBcco, setDateCheckedBcco] = useState<boolean>(false);
   const [buttonState, setButtonState] = useState(); //시간선택상태
-  const [timeChecked, setTimeChecked] = useState();
 
   //date-picker
   //시작시간
@@ -85,65 +86,11 @@ export default function MeetingRoomHeader() {
   let today = new Date();
   let month = today.getMonth() + 1;
   let date = today.getDate();
-  // let day = today.getDay();
+
   let koDay = ["일", "월", "화", "수", "목", "금", "토"];
   let weekDays = ["S", "M", "T", "W", "T", "F", "S"];
   let dayOfWeek = koDay[new Date().getDay()];
   let dateString = month + "." + date + "(" + dayOfWeek + ")";
-
-  let AM = [
-    "12:00",
-    "12:30",
-    "01:00",
-    "01:30",
-    "02:00",
-    "02:30",
-    "03:00",
-    "03:30",
-    "04:00",
-    "04:30",
-    "05:00",
-    "05:30",
-    "06:00",
-    "06:30",
-    "07:00",
-    "07:30",
-    "08:00",
-    "08:30",
-    "09:00",
-    "09:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-  ];
-
-  let PM = [
-    "12:00",
-    "12:30",
-    "1:00",
-    "1:30",
-    "2:00",
-    "2:30",
-    "3:00",
-    "3:30",
-    "4:00",
-    "4:30",
-    "5:00",
-    "5:30",
-    "6:00",
-    "6:30",
-    "7:00",
-    "7:30",
-    "8:00",
-    "8:30",
-    "9:00",
-    "9:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-  ];
 
   const CustomInput = forwardRef(
     ({ value, onClick }: any, ref: React.ForwardedRef<HTMLInputElement>) => (
@@ -170,19 +117,82 @@ export default function MeetingRoomHeader() {
     setOpenSelectMeetingRoomDrop(false);
   };
 
-  const clickClock = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const clickClock = (
+    clickclock: string,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    // e.preventDefault();
+    setCheckedTime(clickclock);
+    const meetingTime = [];
+    meetingTime.push(clickclock);
+    setClickMeetingTime(meetingTime);
+    console.log("event", e);
+    console.log("click", clickclock);
   };
 
-  const clickOfficeTime = () => {
-    const newAM = Array(AM.length).slice(19);
-    setCheckAM(newAM);
-    const newPM = Array(PM.length).slice(14, 23);
-    setCheckPM(newPM);
+  const clickOfficeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      const newAM = [...checkAM.slice(20)];
+      setCheckAM(newAM);
+      const newPM = [...checkPM.slice(0, 14)];
+      setCheckPM(newPM);
+    } else if (!e.target.checked) {
+      setCheckAM([
+        "12:00",
+        "12:30",
+        "01:00",
+        "01:30",
+        "02:00",
+        "02:30",
+        "03:00",
+        "03:30",
+        "04:00",
+        "04:30",
+        "05:00",
+        "05:30",
+        "06:00",
+        "06:30",
+        "07:00",
+        "07:30",
+        "08:00",
+        "08:30",
+        "09:00",
+        "09:30",
+        "10:00",
+        "10:30",
+        "11:00",
+        "11:30",
+      ]);
+      setCheckPM([
+        "12:00",
+        "12:30",
+        "01:00",
+        "01:30",
+        "02:00",
+        "02:30",
+        "03:00",
+        "03:30",
+        "04:00",
+        "04:30",
+        "05:00",
+        "05:30",
+        "06:00",
+        "06:30",
+        "07:00",
+        "07:30",
+        "08:00",
+        "08:30",
+        "09:00",
+        "09:30",
+        "10:00",
+        "10:30",
+        "11:00",
+        "11:30",
+      ]);
+    }
   };
 
-  //업무시간만 보기 버튼
-  // const SortOfficeHour = (e: React.ChangeEvent<>) => {};
+  const addAttendeeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
   return (
     <MeetingRoomHeaderContainer>
@@ -359,7 +369,9 @@ export default function MeetingRoomHeader() {
                     }}
                   >
                     {/* <TimeSelect> */}
-                    <TimeSelectSpan>시간 선택</TimeSelectSpan>
+                    <TimeSelectSpan>
+                      {checkedTime ? checkedTime : "시간 선택"}
+                    </TimeSelectSpan>
                     <TimeSelectIconBox>
                       {openTimePicker ? <ThinArrowUp /> : <ThinArrowDown />}
                     </TimeSelectIconBox>
@@ -372,8 +384,10 @@ export default function MeetingRoomHeader() {
                         <OfficeHourButton>
                           <SortButton
                             type="checkbox"
-                            onClick={() => {
-                              clickOfficeTime;
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              clickOfficeTime(e);
                             }}
                           ></SortButton>
                           <SortButtonSpan>업무시간만 보기</SortButtonSpan>
@@ -384,25 +398,36 @@ export default function MeetingRoomHeader() {
                           <AMDiv>
                             <AMSpan>오전</AMSpan>
                             <AMTimeWrapper>
-                              {AM.map((amtime) => {
+                              {checkAM.map((amtime) => (
                                 <TimeDiv
                                   key={amtime}
-                                  onClick={(
-                                    e: React.MouseEvent<HTMLElement>
-                                  ) => {
-                                    clickClock(e);
-                                  }}
+                                  onClick={(e) => clickClock(amtime, e)}
+                                  // style={{
+                                  //   backgroundColor: checkedTime
+                                  //     ? "#8E99AB"
+                                  //     : "#ffffff",
+                                  // }}
                                 >
                                   <TimeDivSpan>{amtime}</TimeDivSpan>
-                                </TimeDiv>;
-                              })}
+                                </TimeDiv>
+                              ))}
                             </AMTimeWrapper>
                           </AMDiv>
                           <PMDiv>
                             <PMSpan>오후</PMSpan>
                             <PMTimeWrapper>
-                              {PM.map((pmtime) => (
-                                <TimeDiv key={pmtime}>
+                              {checkPM.map((pmtime) => (
+                                <TimeDiv
+                                  key={pmtime}
+                                  onClick={(e) => {
+                                    clickClock(pmtime, e);
+                                  }}
+                                  // style={{
+                                  //   backgroundColor: checkedTime
+                                  //     ? "#8E99AB"
+                                  //     : "#ffffff",
+                                  // }}
+                                >
                                   <TimeDivSpan>{pmtime}</TimeDivSpan>
                                 </TimeDiv>
                               ))}
@@ -410,9 +435,12 @@ export default function MeetingRoomHeader() {
                           </PMDiv>
                         </AllTimeButtonWrapper>
                       </DateSelectMiddle>
-                      <ReservedContentSpanBox>
-                        • 선택된 시간부터 선택된 시간까지 예약
-                      </ReservedContentSpanBox>
+                      {clickMeetingTime &&
+                        clickMeetingTime.map((time: string) => (
+                          <ReservedContentSpanBox>
+                            • {time}부터 {time}까지 예약
+                          </ReservedContentSpanBox>
+                        ))}
                       <DateSelectButtonWrapper>
                         <DateSelectCloseButton
                           onClick={() => {
@@ -421,8 +449,26 @@ export default function MeetingRoomHeader() {
                         >
                           <DateSelectClose>취소</DateSelectClose>
                         </DateSelectCloseButton>
-                        <DateSelectOkButton onClick={() => {}}>
-                          <DateSelectOk>확인</DateSelectOk>
+                        <DateSelectOkButton
+                          onClick={() => {
+                            setOpenTimePicker(!openTimePicker);
+                            false;
+                          }}
+                          style={{
+                            background: checkedTime
+                              ? "#333840"
+                              : "rgba(70, 77, 90, 0.12)",
+                          }}
+                        >
+                          <DateSelectOk
+                            style={{
+                              color: checkedTime
+                                ? "#FFFFFF"
+                                : "rgba(70, 77, 90, 0.26)",
+                            }}
+                          >
+                            확인
+                          </DateSelectOk>
                         </DateSelectOkButton>
                       </DateSelectButtonWrapper>
                     </DateSelectBox>
@@ -434,8 +480,10 @@ export default function MeetingRoomHeader() {
                   <AttendeeInput
                     type="text"
                     placeholder="참석자 이름, 그룹을 입력해주세요."
+                    // onChange={}
                   ></AttendeeInput>
-                  {}
+                  {/* {openSearchAttendeesDiv && (
+                  )} */}
                 </AttendeeBox>
 
                 <ButtonWrapper>
@@ -910,17 +958,6 @@ const DateIconBox = styled.div`
   margin: 13px 12px 0 0;
 `;
 
-const Calendar = styled.div`
-  width: 320px;
-  height: 389px;
-  z-index: 1;
-  position: absolute;
-  top: 315px;
-  border: 1px solid black;
-  border-radius: 4px;
-  background-color: #ffffff;
-`;
-
 const TimePicker = styled.div`
   width: 254px;
   height: 47px;
@@ -993,6 +1030,7 @@ const OfficeHourButton = styled.div`
 const SortButton = styled.input`
   width: 15px;
   height: 15px;
+  cursor: pointer;
 `;
 
 const SortButtonSpan = styled.div`

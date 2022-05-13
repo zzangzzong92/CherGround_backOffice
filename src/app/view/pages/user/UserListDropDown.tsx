@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ArrowUp from "../../../assets/images/ArrowUp.svg";
-import ArrowDown from "../../../assets/images/ArrowDown.svg";
+import ArrowUp from "../../assets/images/ArrowUp.svg";
+import ArrowDown from "../../assets/images/ArrowDown.svg";
 
 const UserListDropDown = ({ selected, setSelected, setSort }: any) => {
   const [isActive, setIsActive] = useState<boolean>(false);

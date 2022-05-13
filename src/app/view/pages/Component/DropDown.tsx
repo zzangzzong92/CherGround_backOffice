@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ArrowUp from "../../../assets/images/ArrowUp.svg";
-import ArrowDown from "../../../assets/images/ArrowDown.svg";
+import ArrowUp from "../../assets/images/ArrowUp.svg";
+import ArrowDown from "../../assets/images/ArrowDown.svg";
+import DropDownApi from "data/api/member/DropDownApi";
 
 const DropDown = ({ selected, setSelected, setMemberList, groupId }: any) => {
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -21,21 +22,10 @@ const DropDown = ({ selected, setSelected, setMemberList, groupId }: any) => {
         break;
       default:
     }
-    console.log("sort", sort);
-
-    fetch(
-      `http://localhost:8080/group/${groupId}/member?sort=${sort}&page=1&amount=15`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-      }
-    )
-      .then((res) => res.json())
-      .then((users) => {
-        setMemberList(users);
-      });
+    new DropDownApi().getSort(groupId, sort).then((users) => {
+      setMemberList(users);
+    });
   };
-  console.log(groupId);
 
   return (
     <DropDownContainer

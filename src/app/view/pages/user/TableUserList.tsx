@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import StarIcon from "../../../assets/images/StarIcon.svg";
+import StarIcon from "../../assets/images/StarIcon.svg";
 
 function TableUserList({ user }: any) {
   return (
@@ -53,7 +53,7 @@ const MemberImg = styled.div`
 `;
 
 const MemberName = styled.div`
-  width: 39px;
+  width: auto;
   height: 20px;
   margin-left: 20px;
 `;

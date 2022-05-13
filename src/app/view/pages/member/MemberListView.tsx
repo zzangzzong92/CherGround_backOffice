@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TableMemberList from "./TableMemberList";
-import MemberAddModal from "./MemberAddModal";
-import DropDown from "app/view/pages/member/Component/DropDown";
-import DotDotDot from "../../../assets/images/DotDotDot.svg";
-import SearchNameDrop from "app/view/component/SearchNameDrop";
-import Modal from "app/view/component/Modal";
+import MemberAddModal from "../Component/MemberAddModal";
+import DropDown from "app/view/pages/Component/DropDown";
+import DotDotDot from "../../assets/images/DotDotDot.svg";
+import Modal from "app/view/pages/Component/Modal";
+import MemberListViewApi from "data/api/member/MemberListViewApi";
+import AddSearchMemberName from "./AddSearchMemberName";
+import { useHistory } from "react-router";
 
 function MemberListView({
   groupList,
@@ -14,19 +16,20 @@ function MemberListView({
   group,
   setGroup,
 }: any) {
+  const history = useHistory();
   const [selected, setSelected] = useState<string>("직책순 보기");
-  const [searchData] = useState<Array<string>>([]);
-  const [search, setSearch] = useState<string>("");
+  const [searchMemberName, setSearchMemberName] = useState<string[]>([]);
+  const [addMemberModalInput, setAddMemberModalInput] = useState<string>("");
+  const [userId, setUserId] = useState<number>();
 
   //모달 모음
   const [isOpenAddMemberModal, setIsOpenAddMemberModal] =
     useState<boolean>(false);
   const [openGroupAddDelete, setOpenGroupAddDelete] = useState<boolean>(false);
-  const [openSearchNamePartDrop] = useState<boolean>(false);
   const [openGroupInfoEdit, setOpenGroupInfoEdit] = useState<boolean>(false);
   const [openGroupDelete, setOpenGroupDelete] = useState<boolean>(false);
-  const [addMemberInput, setAddMemberInput] = useState<string>("");
-  const getAddButtonColorChange = addMemberInput.length >= 2;
+  const [openaddMemberSearch, setOpenAddMemberSearch] =
+    useState<boolean>(false);
   const [editGroupInput, setEditGroupInput] = useState<string>("");
   const getEditGroupInput = editGroupInput.length >= 2;
 
@@ -34,7 +37,7 @@ function MemberListView({
   //멤버 filter
   useEffect(() => {
     fetch(
-      `http://localhost:8080/group/${groupId}/member?sort=name&page=1&amount=15`,
+      `http://localhost:8000/group/${groupId}/member?sort=name&page=1&amount=15`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
@@ -44,21 +47,37 @@ function MemberListView({
         return res.json();
       })
       .then((data) => {
-        console.log(data);
-
         setGroup(data);
       });
   }, [groupId]);
 
+  const addMemberSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setAddMemberModalInput(e.target.value);
+  };
+
+  useEffect(() => {
+    if (addMemberModalInput) {
+      new MemberListViewApi()
+        .searchNameAndPart(addMemberModalInput)
+        .then((user: any) => {
+          setSearchMemberName(user.data);
+        })
+        .then(() => setOpenAddMemberSearch(true));
+    } else {
+      setOpenAddMemberSearch(false);
+    }
+  }, [addMemberModalInput]);
+
   const DeleteGroup = () => {
-    fetch(`http://localhost:8080/group/${groupId}`, {
+    fetch(`http://localhost:8000/group/${groupId}`, {
       method: "delete",
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
         mode: "cors",
       },
     }).then(() => {
-      fetch(`http://localhost:8080/group`, {
+      fetch(`http://localhost:8000/group`, {
         //삭제 후 조회를 위한 fetch
         method: "get",
         headers: {
@@ -76,7 +95,7 @@ function MemberListView({
   };
 
   const editGroupName = () => {
-    fetch(`http://localhost:8080/group/${groupId}`, {
+    fetch(`http://localhost:8000/group/${groupId}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -87,7 +106,7 @@ function MemberListView({
         name: editGroupInput,
       }),
     }).then(() =>
-      fetch(`http://localhost:8080/group`, {
+      fetch(`http://localhost:8000/group`, {
         //삭제 후 조회를 위한 fetch
         method: "get",
         headers: {
@@ -106,7 +125,7 @@ function MemberListView({
   };
 
   const addMember = () => {
-    fetch(`http://localhost:8080/group/${group.members.id}/member`, {
+    fetch(`http://localhost:8000/group/${groupId}/user`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -114,20 +133,12 @@ function MemberListView({
         mode: "cors",
       },
       body: JSON.stringify({
-        memberId: group.members.id,
+        userId,
       }),
-    })
-      .then((res) => res.json())
-      .then((result) => setGroup(result))
-      .then(() => setIsOpenAddMemberModal(false));
-  };
-
-  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const [openSearchDrop, setOpenSearchDrop] = useState<boolean>(false);
-
-    e.preventDefault();
-    setAddMemberInput(e.target.value);
-    setSearch(e.target.value);
+    }).then(() => {
+      setIsOpenAddMemberModal(false);
+      history.push(`/group/${groupId}`);
+    });
   };
 
   return (
@@ -274,35 +285,35 @@ function MemberListView({
                     <CheckName>
                       <CheckNameSpan>이름</CheckNameSpan>
                       <CheckNameText
-                        // onChange={SearchHandler}
                         type="text"
                         placeholder="구성원의 이름을 입력해주세요."
-                        onChange={onChangeSearch}
-                        value={search}
+                        onChange={addMemberSearch}
+                        value={addMemberModalInput}
                       ></CheckNameText>
                     </CheckName>
                     <SearchDropDown>
-                      {openSearchNamePartDrop && (
-                        <NameContainer>
-                          {searchData &&
-                            searchData.map((searchNameGroup: any) => {
-                              if (searchData)
+                      {openaddMemberSearch && (
+                        <AddMemberDropDownContainer>
+                          {searchMemberName &&
+                            searchMemberName.map((userName: any) => {
+                              if (searchMemberName)
                                 return (
-                                  <SearchNameDrop
-                                    key={searchNameGroup.id}
-                                    searchNamePart={searchNameGroup}
-                                    setGroup={setGroup}
+                                  <AddSearchMemberName
+                                    key={userName.id}
+                                    userName={userName}
+                                    setUserId={setUserId}
+                                    setAddMemberModalInput={
+                                      setAddMemberModalInput
+                                    }
+                                    setOpenAddMemberSearch={
+                                      setOpenAddMemberSearch
+                                    }
                                   />
                                 );
                             })}
-                        </NameContainer>
+                        </AddMemberDropDownContainer>
                       )}
                     </SearchDropDown>
-                    {/* <MappingNameList>
-                      {openAddMemberInputDrop && (
-                        <NameContainer>{searchData}</NameContainer>
-                      )}
-                    </MappingNameList> */}
                     <ButtonWrapper>
                       <AddMemberColseButton
                         onClick={() => {
@@ -311,23 +322,8 @@ function MemberListView({
                       >
                         <Close>취소</Close>
                       </AddMemberColseButton>
-                      <AddMemberAddButton
-                        style={{
-                          backgroundColor: getAddButtonColorChange
-                            ? "#333840"
-                            : "rgba(70, 77, 90, 0.12)",
-                        }}
-                      >
-                        <Add
-                          style={{
-                            color: getAddButtonColorChange
-                              ? "#FFFFFF"
-                              : "rgba(70, 77, 90, 0.26)",
-                          }}
-                          onClick={addMember}
-                        >
-                          추가
-                        </Add>
+                      <AddMemberAddButton onClick={addMember}>
+                        <Add>추가</Add>
                       </AddMemberAddButton>
                     </ButtonWrapper>
                   </AddMemberContainer>
@@ -588,6 +584,18 @@ const CheckNameText = styled.input`
   background-color: #ebeff5;
 `;
 
+const MemberName = styled.div`
+  position: absolute;
+  top: 130px;
+  left: 35px;
+  width: 80px;
+  height: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 26px;
+  color: #333840;
+`;
+
 const ButtonWrapper = styled.div`
   display: flex;
   width: 398px;
@@ -639,14 +647,15 @@ const Add = styled.div`
 
 const SearchDropDown = styled.div``;
 
-const NameContainer = styled.div`
+const AddMemberDropDownContainer = styled.div`
   position: absolute;
-  left: 0px;
-  top: 41px;
+  left: 25px;
+  top: 163px;
   display: block;
-  width: 260px;
+  width: 344px;
   height: 180px;
   overflow: scroll;
+  border: 1px solid black;
   background-color: #ffffff;
   z-index: 1;
 `;

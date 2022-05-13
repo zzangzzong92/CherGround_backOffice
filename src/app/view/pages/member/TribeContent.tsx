@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory, useParams } from "react-router";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 
 function TribeContent({ tribe, group, setGroup }: any) {
@@ -8,7 +8,6 @@ function TribeContent({ tribe, group, setGroup }: any) {
 
   const clickPart = (e: React.MouseEvent<Element>) => {
     e.preventDefault();
-
     history.push(`/group/${tribe.id}`);
   };
 

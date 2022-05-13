@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-// import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import styled from "styled-components";
 import Cherground from "../../../../app/view/assets/images/Cherground.svg";
+import SigninApi from "data/api/member/SigninApi";
 
 export default function SignIn() {
   const [emailInput, setEmailInput] = useState<string>("");
@@ -26,39 +25,15 @@ export default function SignIn() {
   //로그인 validation 정규식으로 적용하기! 너무 어렵다면 인터넷에 만들어져 있는걸 활용할 계획
 
   const goMain = () => {
-    fetch(`http://localhost:8080/user/signin`, {
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-        mode: "cors",
-      },
-      body: JSON.stringify({
-        email: emailInput,
-        password: pwInput,
-      }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((result) => {
-        console.log(result);
-        sessionStorage.setItem("ID", result.token);
+    new SigninApi()
+      .singin(emailInput, pwInput)
+      .then((result: any) => {
+        sessionStorage.setItem("ID", result.data.token);
       })
       .then(() => {
         history.push("/");
       });
   };
-
-  // onLogin = () => {
-  //   const data = { emailInput, pwInput };
-  //   axios.post('/login', data).then(response => {
-  //     const { accessToken } = response.data;
-  //     axios.defaults.headers.common[] = `Bearer ${accessToken}`;
-  //   }).catch(error = {
-  //     console.log("오류");
-
-  //   })
-  // };
 
   return (
     <LoginContainer>
@@ -142,7 +117,7 @@ const FormWrapper = styled.div`
 
 const InputDiv = styled.div`
   width: 400px;
-  height: 50px;
+  height: 60px;
   margin: 16px 30px;
   display: flex;
   flex-direction: column;

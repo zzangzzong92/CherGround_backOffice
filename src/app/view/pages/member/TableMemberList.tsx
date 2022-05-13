@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import StarIcon from "../../../assets/images/StarIcon.svg";
-import DotDotDot from "../../../assets/images/DotDotDot.svg";
-import RemoveFile from "../../../assets/images/RemoveFile.svg";
-import FileUpload from "../../../assets/images/FileUpload.svg";
-import Modal from "app/view/component/Modal";
+import StarIcon from "../../assets/images/StarIcon.svg";
+import DotDotDot from "../../assets/images/DotDotDot.svg";
+import RemoveFile from "../../assets/images/RemoveFile.svg";
+import FileUpload from "../../assets/images/FileUpload.svg";
+import Modal from "app/view/pages/Component/Modal";
 
 function TableMemberList({ member, setUsers }: any) {
   const [openProfileDiv, setOpenProfileDiv] = useState<boolean>(false);
@@ -29,8 +29,6 @@ function TableMemberList({ member, setUsers }: any) {
     setProfileImg("");
     setFileName("");
   };
-
-  console.log(member.user);
 
   return (
     <TableListContainer>
@@ -216,7 +214,7 @@ const MemberImg = styled.div`
 `;
 
 const MemberName = styled.div`
-  width: 39px;
+  width: auto;
   height: 20px;
   margin-left: 20px;
 `;

@@ -3,11 +3,10 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import SignIn from "./view/pages/loginNsignup/SignIn";
 import SignUp from "./view/pages/loginNsignup/SignUp";
 import MeetingRoomMain from "./view/pages/meetingroom/MeetingRoomMain";
-import CloseSideNav from "./view/pages/member/Component/CloseSideNav";
-import MemberMainView from "./view/pages/member/Component/MemberMainView";
-import NotFound from "./view/pages/member/Component/NotFound";
-import SideNav from "./view/pages/member/Component/SideNav";
-import UserMainView from "./view/pages/member/Component/UserMainView";
+import MemberMainView from "./view/pages/member/MemberMainView";
+import NotFound from "./view/pages/Component/NotFound";
+import SideNav from "./view/pages/Component/SideNav";
+import UserMainView from "./view/pages/user/UserMainView";
 
 const App: React.FC = () => {
   return (

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import SearchIcon from "../../../assets/images/SearchIcon.svg";
-import Plus from "../../../assets/images/Plus.svg";
-import TribeContent from "./TribeContent";
-import SearchNameDrop from "../../../component/SearchNameDrop";
-import GroupAddModal from "./GroupAddModal";
+import SearchIcon from "../../assets/images/SearchIcon.svg";
+import Plus from "../../assets/images/Plus.svg";
+import UserTribeContent from "../../pages/user/UserTribeContent";
+import GroupAddModal from "../../pages/member/GroupAddModal";
 import { useHistory } from "react-router";
+import GroupSelectViewApi from "data/api/member/GorupSelectViewApi";
+import UserSearchDrop from "./UserSearchDrop";
 
-function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
-  const [search, setSearch] = useState<string>("");
+function UserGroupSelectView({ setUsers, setGroupList, groupList }: any) {
   const [searchData, setSearchData] = useState<Array<string>>([]);
   const [openGroupAddModal, setOpenGroupAddModal] = useState<boolean>(false);
   const [addGroupNameInput, setAddGroupNameInput] = useState<string>("");
@@ -23,33 +23,11 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setSearch(e.target.value);
-  };
-
-  const totalMember = () => {
-    //전체 구성원 조회
-    fetch(`http://localhost:8080/user?sort=name&page=1&amount=15`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((total) => {
-        setGroup(total);
-        history.push(`/`);
-      });
-  };
-
-  useEffect(() => {
-    //이름 파트 검색
-    if (search) {
-      fetch(`http://localhost:8080/search?name=${search}`, {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-      })
-        .then((res) => res.json())
-        .then((searchdata) => {
-          setSearchData(searchdata);
+    if (e.target.value) {
+      new GroupSelectViewApi()
+        .searchMember(e.target.value)
+        .then((searchdata: any) => {
+          setSearchData(searchdata.data);
         })
         .then(() => {
           setOpenSearchNamePartDrop(true);
@@ -57,25 +35,22 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
     } else {
       setOpenSearchNamePartDrop(false);
     }
-  }, [search]);
+  };
+
+  const totalMember = () => {
+    new GroupSelectViewApi().getGroupMember().then((total) => {
+      setUsers(total.data);
+      history.push("/");
+    });
+  };
 
   const AddGroup = () => {
     //그룹추가
-    fetch(`http://localhost:8080/group`, {
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
-        mode: "cors",
-      },
-      body: JSON.stringify({
-        name: addGroupNameInput,
-      }),
-    })
-      .then((res) => {
-        return res.json();
+    new GroupSelectViewApi()
+      .addGroup(addGroupNameInput)
+      .then((result) => {
+        setGroupList(result.data);
       })
-      .then((result) => setGroupList(result))
       .then(() => setOpenGroupAddModal(false));
   };
 
@@ -86,7 +61,6 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
           type="text"
           placeholder="파트, 이름 검색"
           onChange={onChangeSearch}
-          value={search}
         ></TextInput>
         <SearchDropDown>
           {openSearchNamePartDrop && (
@@ -95,11 +69,10 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
                 searchData.map((searchNameGroup: any) => {
                   if (searchData)
                     return (
-                      <SearchNameDrop
+                      <UserSearchDrop
                         key={searchNameGroup.id}
                         searchNameGroup={searchNameGroup}
-                        setGroup={setGroup}
-                        setGroupList={setGroupList}
+                        setUsers={setUsers}
                       />
                     );
                 })}
@@ -114,7 +87,9 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
         <GroupController>
           <Title onClick={totalMember}>CherGround</Title>
           <AllMember>
-            <MemberNumber>{groupList.totalUserCount}</MemberNumber>
+            <MemberNumber>
+              {groupList.data && groupList.data.totalUserCount}
+            </MemberNumber>
           </AllMember>
           <PlusIconBox
             onClick={() => {
@@ -138,14 +113,6 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
                     placeholder="추가할 그룹 이름을 입력하세요."
                     onChange={handleAddGroupInput}
                   ></AddNameInput>
-                  {/* <AddGroupSearchName>
-                  {searchData && searchData.map(() => {
-                    if(searchData)
-                      return(
-                        
-                      )
-                  })}
-                  </AddGroupSearchName> */}
                   <ButtonWrapper>
                     <AddGroupCloseButton
                       onClick={() => {
@@ -180,14 +147,13 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
         </GroupController>
         <TribeList>
           <TribeContentWrapper>
-            {groupList.groups &&
-              groupList.groups.map((tribe: any) => {
+            {groupList.data &&
+              groupList.data.groups.map((tribe: any) => {
                 return (
-                  <TribeContent
+                  <UserTribeContent
                     key={tribe.id}
                     tribe={tribe}
-                    group={group}
-                    setGroup={setGroup}
+                    setUsers={setUsers}
                   />
                 );
               })}
@@ -411,4 +377,4 @@ const Add = styled.div`
   margin: 10px auto;
 `;
 
-export default GroupSelectView;
+export default UserGroupSelectView;

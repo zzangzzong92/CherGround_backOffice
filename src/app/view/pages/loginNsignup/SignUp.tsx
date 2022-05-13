@@ -1,3 +1,4 @@
+import SignUpApi from "data/api/member/SignUpApi";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
@@ -53,19 +54,9 @@ export default function SignUp() {
 
   const submit: React.MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:8080/user/signup`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        mode: "cors",
-      },
-      body: JSON.stringify({
-        name: nameInput,
-        password: pwInput,
-        email: emailInput,
-        phoneNumber: phoneNumberInput,
-      }),
-    }).then(() => history.push("/signin"));
+    new SignUpApi()
+      .signUp(nameInput, pwInput, emailInput, phoneNumberInput)
+      .then(() => history.push("/signin"));
   };
 
   const history = useHistory();

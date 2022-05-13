@@ -1,48 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-export default function SearchNameDrop({
-  searchNameGroup,
-  setGroup,
-  setGroupList,
-}: any) {
-  const selectUser = () => {
-    fetch(
-      `http://localhost:8080/group/${searchNameGroup.id}/member?sort=name&page=1&amount=15`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-      }
-    )
-      .then((res) => res.json())
-      .then((users) => {
-        setGroup(users);
-      });
-  };
-
-  const selectGroup = () => {
-    fetch(
-      `http://localhost:8080/group/${searchNameGroup.id}/member?sort=name&page=1&amount=15`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-      }
-    )
-      .then((res) => res.json())
-      .then((users) => {
-        setGroup(users);
-      });
-  };
-
+export default function GroupAddMember({ group }: any) {
   return (
     <NamePosiotionWrapper
-      onClick={searchNameGroup.type === "user" ? selectUser : selectGroup}
+    // onClick={group === "user" ? selectUser : selectGroup}
     >
       <MemberName>
-        <NameSpan>{searchNameGroup.name}</NameSpan>
+        <NameSpan>{group.name}</NameSpan>
       </MemberName>
       <MemberPart>
-        <PositionSpan>{searchNameGroup.position}</PositionSpan>
+        <PositionSpan>{group.position}</PositionSpan>
       </MemberPart>
     </NamePosiotionWrapper>
   );

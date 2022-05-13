@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TableUserList from "./TableUserList";
-import Modal from "app/view/component/Modal";
+import Modal from "app/view/pages/Component/Modal";
 import UserListDropDown from "./UserListDropDown";
+import UserListViewApi from "data/api/member/UserListViewApi";
 
 function UserListView({ users, setUsers }: any) {
   const [selected, setSelected] = useState<string>("이름순 보기");
-  // const [searchData, setSearchData] = useState<Array<string>>([]);
-  const [usersCount, setUsersCount] = useState<number>(0);
+  const [usersCount, setUsersCount] = useState(0);
   const [sort, setSort] = useState<string>("name");
 
   //모달 모음
@@ -24,50 +24,44 @@ function UserListView({ users, setUsers }: any) {
 
   //멤버 filter
   useEffect(() => {
-    //전체구성원 조회
-    fetch(`http://localhost:8080/user?sort=${sort}&page=${page}&amount=15`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((users) => {
-        fetch(`http://localhost:8080/user/count`, {
-          method: "GET",
-          headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-        })
-          .then((secondRes) => secondRes.json())
-          .then((usersCountData) => {
-            users.forEach((user: any) => {
-              let count = 0;
-              user.members.forEach((member: any) => {
-                if (member.isLeader) {
-                  count++;
-                }
-              });
-              if (count) {
-                user.isLeader = true;
-              }
-            });
+    const userListViewApi = new UserListViewApi();
+    userListViewApi.getUserList(sort, page).then((userList: any) => {
+      userList.data.forEach((user: any) => {
+        let count = 0;
+        user.members.forEach((member: any) => {
+          if (member.isLeader) {
+            count++;
+          }
+        });
+        if (count) {
+          user.isLeader = true;
+        }
 
-            setUsersCount(usersCountData);
-
-            const paginationUserCountArray = [];
-            for (let i = 0; i < Math.ceil((usersCountData - 1) / 15); i++) {
-              paginationUserCountArray.push(i + 1); //유저수가 15명이면 딱 1로 떨어지나 +1을 하면 의미없는 2가 생성됨
-            }
-
-            setPaginationArray(paginationUserCountArray);
-            setUserPerPage(usersCountData);
-            setUsers(users);
-          });
+        setUsersCount(user);
       });
+      userListViewApi.getUserCount().then((userCount: any) => {
+        setUsersCount(userCount.data);
+        const paginationUserCountArray: number[] = [];
+        for (let i = 0; i < Math.floor((userCount.data - 1) / 15) + 1; i++) {
+          paginationUserCountArray.push(i + 1);
+        }
+        setPaginationArray(paginationUserCountArray);
+        setUserPerPage(userCount.data);
+      });
+      setUsers(userList.data);
+    });
   }, [sort]);
 
-  const loadPaginationContent = (pageNumber: number) => {
+  const loadPaginationContent = (pageNumber: number, sort: string) => {
+    // new UserListViewApi().getPageContent(pageNumber, sort).then((result) => {
+    //   setUsers(result);
+    //   console.log(result);
+
+    //   setPage(pageNumber);
+    // });
+
     fetch(
-      `http://localhost:8080/user?sort=${sort}&page=${pageNumber}&amount=15`,
+      `http://localhost:8000/user?sort=${sort}&page=${pageNumber}&amount=15`,
       {
         method: "get",
         headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
@@ -78,37 +72,13 @@ function UserListView({ users, setUsers }: any) {
       })
       .then((result) => {
         setUsers(result);
+
         setPage(pageNumber);
       });
   };
 
   //1. 조회 api에서 page query parameter에 현재 페이지 숫자를 넣어서 fetch
   //2. setUsers에 넣어줌
-
-  // const addMember = () => {
-  //   fetch(`http://localhost:8080/group/${params.id}/member`, {
-  //     method: "POST",
-  //     headers: {
-  //       "content-type": "application/json",
-  //       Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
-  //       mode: "cors",
-  //     },
-  //     body: JSON.stringify({
-  //       memberId: addMemberInput,
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((result) => setUsers(result))
-  //     .then(() => setIsOpenAddMemberModal(false));
-  // };
-
-  // const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const [openSearchDrop, setOpenSearchDrop] = useState<boolean>(false);
-  //   const [search, setSearch] = useState<string>("");
-  //   e.preventDefault();
-  //   setAddMemberInput(e.target.value);
-  //   setSearch(e.target.value);
-  // };
 
   return (
     <MemberListViewContainer>
@@ -232,14 +202,16 @@ function UserListView({ users, setUsers }: any) {
       <PaginationButtonSection>
         <PaginationButtonWrapper>
           {paginationArray &&
-            paginationArray.map((pageNumber: number) => (
-              <PaginationButton
-                key={pageNumber}
-                onClick={() => loadPaginationContent(pageNumber)}
-              >
-                {pageNumber}
-              </PaginationButton>
-            ))}
+            paginationArray.map((pageNumber: number) => {
+              return (
+                <PaginationButton
+                  key={pageNumber}
+                  onClick={() => loadPaginationContent(pageNumber, sort)}
+                >
+                  {pageNumber}
+                </PaginationButton>
+              );
+            })}
         </PaginationButtonWrapper>
       </PaginationButtonSection>
     </MemberListViewContainer>
@@ -508,14 +480,15 @@ const PaginationButtonSection = styled.div`
 `;
 
 const PaginationButtonWrapper = styled.div`
-  width: 420px;
+  width: fit-content;
   height: 40px;
-  margin: 28px 0 0 360px;
+  margin: 28px auto;
 `;
 
 const PaginationButton = styled.button`
   width: 40px;
   height: 40px;
+  margin: 0 auto;
   border: none;
   border-radius: 50%;
   outline: none;

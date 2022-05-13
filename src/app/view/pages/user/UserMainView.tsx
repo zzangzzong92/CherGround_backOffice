@@ -1,8 +1,20 @@
+import UserMainViewApi from "data/api/member/UserMainViewApi";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import GroupSelectView from "./GroupSelectView";
-import Header from "./Header";
+import UserGroupSelectView from "../user/UserGroupSelectView";
+import Header from "../Component/Header";
 import UserListView from "./UserListView";
+
+interface Users {
+  id: number;
+  email: string;
+  job?: string;
+  name: string;
+  phoneNumber: number;
+  position?: string;
+  profileImgUrl?: string;
+  member: [];
+}
 
 export default function UserMainView() {
   const [users, setUsers] = useState([]); // 멤버 (회사에 소속되어 있지 않은 사람)
@@ -10,27 +22,29 @@ export default function UserMainView() {
 
   useEffect(() => {
     //그룹조회
-    fetch("http://localhost:8080/group", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setGroupList(data);
+    new UserMainViewApi().getUserInfo().then((result: any) => {
+      setGroupList(result);
+    });
+    // fetch("http://localhost:8080/group", {
+    //   method: "GET",
+    //   headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
+    // })
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .then((data) => {
+    //     setGroupList(data);
 
-        // setGroup(data);
-      });
+    //     // setGroup(data);
+    //   });
   }, []);
 
   return (
     <MainContainer>
       <Header />
       <Bottom>
-        <GroupSelectView
+        <UserGroupSelectView
           setUsers={setUsers}
-          users={users}
           setGroupList={setGroupList}
           groupList={groupList}
         />

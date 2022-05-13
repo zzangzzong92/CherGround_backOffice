@@ -41,40 +41,13 @@ export default function MeetingRoomMain() {
     "오후 11시",
   ];
 
-  useEffect(() => {
-    //멤버 찾기
-    if (searchMember) {
-      fetch(`http://localhost:8080/search?name=${searchMember}`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          setSearchMember(data);
-        })
-        .then(() => {
-          setOpenSearchNameDrop(true);
-        });
-    } else {
-      setOpenSearchNameDrop(false);
-    }
-  }, [searchMember]);
+  //회의찾기
+  // const SearchMeetingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   e.preventDefault();
+  //   if(e.target.value){
 
-  // const AddMeetingRoom = () => {
-  //   fetch(``, {
-  //     method: "POST",
-  //     headers: {
-  //       "content-type": "application/json",
-  //       Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
-  //       mode: "cors",
-  //     },
-  //     body: JSON.stringify({}),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((result) => setAddMeetingRoom(result));
-  // };
+  //   }
+  // }
 
   return (
     <MeetingRoomMainContainer>
@@ -88,8 +61,7 @@ export default function MeetingRoomMain() {
                 <TextInput
                   type="text"
                   placeholder="회의명 검색"
-                  // onChange={onChangeSearch}
-                  // value={search}
+                  // onChange={SearchMeetingHandler}
                 ></TextInput>
                 <SearchIconBox>
                   <SearchIcon />
@@ -142,8 +114,8 @@ export default function MeetingRoomMain() {
                 times.map((time) => (
                   <>
                     <TableRow>
-                      <TableDataTop>
-                        <TimeDiv key={time}>{time}</TimeDiv>
+                      <TableDataTop key={time}>
+                        <TimeDiv>{time}</TimeDiv>
                       </TableDataTop>
                       <TableDataTop></TableDataTop>
                       <TableDataTop></TableDataTop>
