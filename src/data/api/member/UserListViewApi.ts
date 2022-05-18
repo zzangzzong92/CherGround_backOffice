@@ -1,9 +1,9 @@
 import Axios from "axios";
 
 export default class UserListViewApi {
-  getUserList(sort: string, page: any) {
+  getUserList(sort: string) {
     return Axios.get(
-      `http://localhost:8000/user?sort=${sort}&page=${page}&amount=15`,
+      `http://localhost:8000/user?sort=${sort}&page=1&amount=15`,
       {
         headers: { Authorization: `Bearer ${sessionStorage.getItem("ID")}` },
       }

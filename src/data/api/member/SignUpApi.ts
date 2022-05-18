@@ -8,7 +8,6 @@ export default class SignUpApi {
     phoneNumberInput: number | string
   ) {
     return Axios.post(`http://localhost:8000/user/signup`, {
-      method: "post",
       headers: {
         "Content-Type": "application/json",
         mode: "cors",

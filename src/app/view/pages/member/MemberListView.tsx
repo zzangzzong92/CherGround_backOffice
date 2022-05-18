@@ -349,8 +349,10 @@ function MemberListView({
           return (
             <TableMemberList
               key={member.id}
+              userId={member.user.id}
               member={member}
               setGroup={setGroup}
+              groupId={groupId}
             />
           );
         })}

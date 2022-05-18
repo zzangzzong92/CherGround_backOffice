@@ -73,7 +73,7 @@ export default function MeetingRoomHeader() {
     "11:30",
   ]);
   const [clickMeetingTime, setClickMeetingTime] = useState<string[]>([]);
-  const [dateCheckedBcco, setDateCheckedBcco] = useState<boolean>(false);
+  const [dateCheckedBcco, setDateCheckedBcco] = useState<string>("#ffffff");
   const [buttonState, setButtonState] = useState(); //시간선택상태
 
   //date-picker
@@ -121,7 +121,7 @@ export default function MeetingRoomHeader() {
     clickclock: string,
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    // e.preventDefault();
+    e.preventDefault();
     setCheckedTime(clickclock);
     const meetingTime = [];
     meetingTime.push(clickclock);
@@ -402,11 +402,6 @@ export default function MeetingRoomHeader() {
                                 <TimeDiv
                                   key={amtime}
                                   onClick={(e) => clickClock(amtime, e)}
-                                  // style={{
-                                  //   backgroundColor: checkedTime
-                                  //     ? "#8E99AB"
-                                  //     : "#ffffff",
-                                  // }}
                                 >
                                   <TimeDivSpan>{amtime}</TimeDivSpan>
                                 </TimeDiv>
@@ -422,11 +417,6 @@ export default function MeetingRoomHeader() {
                                   onClick={(e) => {
                                     clickClock(pmtime, e);
                                   }}
-                                  // style={{
-                                  //   backgroundColor: checkedTime
-                                  //     ? "#8E99AB"
-                                  //     : "#ffffff",
-                                  // }}
                                 >
                                   <TimeDivSpan>{pmtime}</TimeDivSpan>
                                 </TimeDiv>

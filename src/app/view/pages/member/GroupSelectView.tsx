@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import SearchIcon from "../../assets/images/SearchIcon.svg";
 import Plus from "../../assets/images/Plus.svg";
@@ -15,6 +15,7 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
   const [openSearchNamePartDrop, setOpenSearchNamePartDrop] =
     useState<boolean>(false);
   const history = useHistory();
+  const selectTriveRef = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   const getAddButtonColorChange = addGroupNameInput.length >= 1;
   const handleAddGroupInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,30 +46,26 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
   };
 
   const AddGroup = () => {
-    //그룹추가
-    new GroupSelectViewApi()
-      .addGroup(addGroupNameInput)
-      .then((result) => {
-        setGroupList(result.data);
-      })
-
-      .then(() => setOpenGroupAddModal(false));
-    // fetch(`http://localhost:8000/group`, {
-    //   method: "post",
-    //   headers: {
-    //     "content-type": "application/json",
-    //     Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
-    //     mode: "cors",
-    //   },
-    //   body: JSON.stringify({
-    //     name: addGroupNameInput,
-    //   }),
-    // })
-    //   .then((res) => {
-    //     return res.json();
+    // new GroupSelectViewApi()
+    //   .addGroup(addGroupNameInput)
+    //   .then((result) => {
+    //     setGroupList(result.data);
     //   })
-    //   .then((result) => setGroupList(result))
+
     //   .then(() => setOpenGroupAddModal(false));
+    fetch(`http://localhost:8000/group`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        mode: "cors",
+        Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
+      },
+      body: JSON.stringify({
+        name: addGroupNameInput,
+      }),
+    }).then(() => {
+      setOpenGroupAddModal(false);
+    });
   };
 
   return (
@@ -102,7 +99,9 @@ function GroupSelectView({ setGroupList, groupList, group, setGroup }: any) {
       </SearchBar>
       <GroupViewer>
         <GroupController>
-          <Title onClick={totalMember}>CherGround</Title>
+          <Title onClick={totalMember} ref={selectTriveRef}>
+            CherGround
+          </Title>
           <AllMember>
             <MemberNumber>
               {groupList.data && groupList.data.totalUserCount}

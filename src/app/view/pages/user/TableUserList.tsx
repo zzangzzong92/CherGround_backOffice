@@ -7,9 +7,15 @@ function TableUserList({ user }: any) {
     <TableListContainer>
       <MemberListInfo>
         <Member>
-          <MemberImg>{user.name && user.name.slice(1)}</MemberImg>
+          <MemberImg>
+            {user.profileImgUrl ? (
+              <img src={`http://localhost:8080/${user.profileImgUrl}`} />
+            ) : (
+              user.name.slice(1)
+            )}
+          </MemberImg>
           <MemberName>{user.name}</MemberName>
-          {user.isLeader && (
+          {user.members.isLeader === true && (
             <IconBox>
               <StarIcon />
             </IconBox>

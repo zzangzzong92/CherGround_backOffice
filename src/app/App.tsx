@@ -15,11 +15,11 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path={"/signin"} render={() => <SignIn />} />
           <Route path={"/signup"} render={() => <SignUp />} />
-
+          {/* <SideNav> */}
           <Route exact path="/" render={() => <UserMainView />} />
           <Route path="/group/:id" render={() => <MemberMainView />} />
           <Route path={"/meetingroom"} render={() => <MeetingRoomMain />} />
-
+          {/* </SideNav> */}
           <Route component={NotFound} />
         </Switch>
 

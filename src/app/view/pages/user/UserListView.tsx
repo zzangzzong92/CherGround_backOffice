@@ -25,7 +25,7 @@ function UserListView({ users, setUsers }: any) {
   //멤버 filter
   useEffect(() => {
     const userListViewApi = new UserListViewApi();
-    userListViewApi.getUserList(sort, page).then((userList: any) => {
+    userListViewApi.getUserList(sort).then((userList: any) => {
       userList.data.forEach((user: any) => {
         let count = 0;
         user.members.forEach((member: any) => {

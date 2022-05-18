@@ -16,7 +16,6 @@ export default class GroupSelectViewApi {
       headers: {
         "content-type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("ID")}`,
-        mode: "cors",
       },
       name: addGroupNameInput,
     });

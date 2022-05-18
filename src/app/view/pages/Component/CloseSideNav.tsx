@@ -1,35 +1,39 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Calculate from "../../../assets/images/Calculate.svg";
-import Order from "../../../assets/images/Order.svg";
-import Order2 from "../../../assets/images/Order2.svg";
-import Deposit from "../../../assets/images/Deposit.svg";
-import Retail from "../../../assets/images/Retail.svg";
-import Wholesale from "../../../assets/images/Wholesale.svg";
-import Peed from "../../../assets/images/Peed.svg";
-import Buying from "../../../assets/images/Buying.svg";
-import User from "../../../assets/images/User.svg";
-import Inquiry from "../../../assets/images/Inquiry.svg";
-import Questionnaire from "../../../assets/images/Questionnaire.svg";
-import Arcade from "../../../assets/images/Arcade.svg";
-import NoticeAndBanner from "../../../assets/images/NoticeAndBanner.svg";
-import Member from "../../../assets/images/Member.svg";
-import MeetingRoom from "../../../assets/images/MeetingRoom.svg";
-import Close from "../../../assets/images/Close.svg";
-import Open from "../../../assets/images/Open.svg";
-import Logout from "../../../assets/images/Logout.svg";
+import Calculate from "../../assets/images/Calculate.svg";
+import Order from "../../assets/images/Order.svg";
+import Order2 from "../../assets/images/Order2.svg";
+import Deposit from "../../assets/images/Deposit.svg";
+import Retail from "../../assets/images/Retail.svg";
+import Wholesale from "../../assets/images/Wholesale.svg";
+import Peed from "../../assets/images/Peed.svg";
+import Buying from "../../assets/images/Buying.svg";
+import User from "../../assets/images/User.svg";
+import Inquiry from "../../assets/images/Inquiry.svg";
+import Questionnaire from "../../assets/images/Questionnaire.svg";
+import Arcade from "../../assets/images/Arcade.svg";
+import NoticeAndBanner from "../../assets/images/NoticeAndBanner.svg";
+import Member from "../../assets/images/Member.svg";
+import MeetingRoom from "../../assets/images/MeetingRoom.svg";
+import Close from "../../assets/images/Close.svg";
+import Open from "../../assets/images/Open.svg";
+import Logout from "../../assets/images/Logout.svg";
 import { useHistory } from "react-router";
 import SideNav from "./SideNav";
 
 function CloseSideNav() {
-  const [isOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const history = useHistory();
   return (
     <TotalWrapper>
       {isOpen ? (
         <SideNav />
       ) : (
-        <SideNavContainer>
+        <SideNavContainer
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
           <NavLogoAndSlideButton>
             <SlideCheck>
               <SlideButton>{isOpen ? <Close /> : <Open />}</SlideButton>
